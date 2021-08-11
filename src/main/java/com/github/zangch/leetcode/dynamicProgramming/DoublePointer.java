@@ -7,7 +7,7 @@ package com.github.zangch.leetcode.dynamicProgramming;
  *  给你一个整数数组 nums ，返回数组 nums 中所有为等差数组的 子数组 个数。子数组 是数组中的一个连续序列。
  * @date: 2021-08-10
  */
-public class NumberOfArithmeticSlices {
+public class DoublePointer {
     public static int numberOfArithmeticSlices(int[] nums) {
         if (nums.length < 3) {
             return 0;
