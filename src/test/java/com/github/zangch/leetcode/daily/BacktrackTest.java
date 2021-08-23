@@ -18,6 +18,10 @@ class BacktrackTest {
     }
     @Test
     void combinationSum() {
-        System.out.println(backtrack.combinationSum(new int[]{2,3,4,5,6}, 8).toString());
+        System.out.println(backtrack.combinationSum(new int[]{1,2,4,1,3,4}, 8).toString());
+    }
+    @Test
+    void combinationSum2() {
+        System.out.println(backtrack.combinationSum2(new int[]{1,2,4,1,3,4}, 8).toString());
     }
 }

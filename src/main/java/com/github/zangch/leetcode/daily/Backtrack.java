@@ -1,6 +1,7 @@
 package com.github.zangch.leetcode.daily;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -108,19 +109,37 @@ public class Backtrack {
     }
     /**
      * @author: zangch
-     * @describe: 40. 组合总和 II
+     * @describe: 40. 组合总和 II 🥦
      * 给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
      * candidates中的每个数字在每个组合中只能使用一次。
      * 注意：解集不能包含重复的组合。
      * @date: 2021-08-17
      */
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
+        Arrays.sort(candidates);
         List<List<Integer>> result = new ArrayList<>();
         List<Integer> currentList = new ArrayList<>();
-        combinationSumBacktrack2(0,0,currentList, result, candidates, target);
+        combinationSum2Backtrack(0,0,currentList, result, candidates, target);
         return result;
     }
-    public void combinationSumBacktrack2(int current,int index,List<Integer> currentList,List<List<Integer>> result, int[] candidates, int target) {
+    public void combinationSum2Backtrack(int current,int index,List<Integer> currentList,List<List<Integer>> result, int[] candidates, int target) {
+        if (current == target) {
+            result.add(currentList);
+            return;
+        } else if (current > target) {
+            return;
+        }
+        for (int i = index ; i < candidates.length-1 ; i++) {
+            if (index > 0 && candidates[index] == candidates[index-1]) {
+                continue;
+            }
+            current += candidates[i];
+            currentList.add(candidates[i]);
 
+            combinationSum2Backtrack(current, index+1, currentList, result, candidates, target);
+
+            current -= candidates[i];
+            currentList.remove(currentList.size()-1);
+        }
     }
 }
