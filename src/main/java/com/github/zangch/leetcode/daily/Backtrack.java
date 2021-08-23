@@ -124,7 +124,7 @@ public class Backtrack {
     }
     public void combinationSum2Backtrack(int current,int index,List<Integer> currentList,List<List<Integer>> result, int[] candidates, int target) {
         if (current == target) {
-            result.add(currentList);
+            result.add(new ArrayList<>(currentList));
             return;
         } else if (current > target) {
             return;
@@ -140,6 +140,39 @@ public class Backtrack {
 
             current -= candidates[i];
             currentList.remove(currentList.size()-1);
+        }
+    }
+    /**
+     * @author: zangch
+     * @describe: 77. 组合
+     * 给定两个整数 n 和 k，返回范围 [1, n] 中所有可能的 k 个数的组合。
+     * 你可以按 任何顺序 返回答案。
+     * @date: 2021-08-23
+     */
+    public List<List<Integer>> combine(int n, int k) {
+        List<Integer> currentList = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        combineBacktrack(1, currentList, result, n, k);
+        return result;
+    }
+    public void combineBacktrack(int current, List<Integer> currentList, List<List<Integer>> result, int n, int k) {
+        if (current == k+1) {
+            result.add(new ArrayList<>(currentList));
+            return;
+        } else if (!currentList.isEmpty() && n - currentList.get(current-2) < k - current-1) {
+            return;
+        }
+        for (int i = current ; i <= n ; i++) {
+            if (!currentList.isEmpty() && currentList.get(current-2) >= i) {
+                continue;
+            }
+            currentList.add(i);
+            current++;
+
+            combineBacktrack(current, currentList, result, n, k);
+
+            currentList.remove(currentList.size()-1);
+            current--;
         }
     }
 }
