@@ -28,7 +28,7 @@ public class Backtrack {
         }
         return countArrangementBackTrack( 1, 0, nums);
     }
-    public int countArrangementBackTrack(int index, int count, int[] nums){
+    private int countArrangementBackTrack(int index, int count, int[] nums){
         if (index == nums.length) {
             return ++count;
         }
@@ -65,7 +65,7 @@ public class Backtrack {
         letterCombinationsBacktrack(0, new StringBuilder(), result, digits, letterList);
         return result;
     }
-    public void letterCombinationsBacktrack( int index, StringBuilder combination, List<String> result, String digits, List<String> letterList){
+    private void letterCombinationsBacktrack( int index, StringBuilder combination, List<String> result, String digits, List<String> letterList){
         if (index == digits.length()) {
             result.add(combination.toString());
             return;
@@ -90,7 +90,7 @@ public class Backtrack {
         combinationSumBacktrack(0,0,currentList, result, candidates, target);
         return result;
     }
-    public void combinationSumBacktrack(int current,int index,List<Integer> currentList,List<List<Integer>> result, int[] candidates, int target) {
+    private void combinationSumBacktrack(int current,int index,List<Integer> currentList,List<List<Integer>> result, int[] candidates, int target) {
         if (current == target) {
             result.add(new ArrayList<>(currentList));
             return;
@@ -122,7 +122,7 @@ public class Backtrack {
         combinationSum2Backtrack(0,0,currentList, result, candidates, target);
         return result;
     }
-    public void combinationSum2Backtrack(int current,int index,List<Integer> currentList,List<List<Integer>> result, int[] candidates, int target) {
+    private void combinationSum2Backtrack(int current,int index,List<Integer> currentList,List<List<Integer>> result, int[] candidates, int target) {
         if (current == target) {
             result.add(new ArrayList<>(currentList));
             return;
@@ -155,7 +155,7 @@ public class Backtrack {
         combineBacktrack(1, currentList, result, n, k);
         return result;
     }
-    public void combineBacktrack(int current, List<Integer> currentList, List<List<Integer>> result, int n, int k) {
+    private void combineBacktrack(int current, List<Integer> currentList, List<List<Integer>> result, int n, int k) {
         if (current == k+1) {
             result.add(new ArrayList<>(currentList));
             return;
@@ -174,5 +174,107 @@ public class Backtrack {
             currentList.remove(currentList.size()-1);
             current--;
         }
+    }
+    /**
+     * @author: zangch
+     * @describe: 78. 子集
+     * 给你一个整数数组 nums ，数组中的元素 互不相同 。返回该数组所有可能的子集（幂集）。
+     * 解集 不能 包含重复的子集。你可以按 任意顺序 返回解集。
+     * @date: 2021-08-23
+     */
+    public List<List<Integer>> subsets(int[] nums) {
+        List<Integer> currentList = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        subsetsBacktrack(0, currentList, result, nums);
+        return result;
+    }
+    private void subsetsBacktrack(int current, List<Integer> currentList, List<List<Integer>> result, int[] nums) {
+        result.add(new ArrayList<>(currentList));
+        for (int i = current ; i < nums.length ; i++) {
+            currentList.add(nums[i]);
+
+            subsetsBacktrack(i+1, currentList, result, nums);
+
+            currentList.remove(currentList.size()-1);
+        }
+    }
+    /**
+     * @author: zangch
+     * @describe: 46. 全排列
+     * 给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+     * @date: 2021-08-24
+     */
+    public List<List<Integer>> permute(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        permuteBacktrack(0, result, nums);
+        return result;
+    }
+    private void permuteBacktrack(int current, List<List<Integer>> result, int[] nums) {
+        if (current == nums.length) {
+            result.add(Arrays.stream(nums).boxed().collect(Collectors.toList()));
+        }
+        for (int i = current ; i < nums.length ; i++) {
+            int temp = nums[i];
+            nums[i] = nums[current];
+            nums[current] = temp;
+
+            permuteBacktrack(current+1, result, nums);
+
+            temp = nums[i];
+            nums[i] = nums[current];
+            nums[current] = temp;
+        }
+    }
+    /**
+     * @author: zangch
+     * @describe: 47. 全排列 II 🥦
+     * 给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
+     * @date: 2021-08-24
+     */
+    public List<List<Integer>> permuteUnique(int[] nums) {
+        List<Integer> currentList = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+//        Arrays.sort(nums);
+        permuteUniqueBacktrack(0,currentList, result, nums);
+        return result;
+    }
+    private void permuteUniqueBacktrack(int current,List<Integer> currentList, List<List<Integer>> result, int[] nums) {
+        if (current == nums.length) {
+            result.add(new ArrayList<>(currentList));
+        }
+        for (int i = current ; i < nums.length ; i++) {
+            currentList.add(nums[i]);
+            current++;
+
+            permuteUniqueBacktrack(current, currentList, result, nums);
+
+            currentList.remove(currentList.size()-1);
+            current--;
+        }
+    }
+    /**
+     * @author: zangch
+     * @describe: 1863. 找出所有子集的异或总和再求和
+     * 一个数组的 异或总和 定义为数组中所有元素按位 XOR 的结果；如果数组为 空 ，则异或总和为 0 。
+     * 例如，数组 [2,5,6] 的 异或总和 为 2 XOR 5 XOR 6 = 1 。
+     * 给你一个数组 nums ，请你求出 nums 中每个 子集 的 异或总和 ，计算并返回这些值相加之 和 。
+     * 注意：在本题中，元素 相同 的不同子集应 多次 计数。
+     * 数组 a 是数组 b 的一个 子集 的前提条件是：从 b 删除几个（也可能不删除）元素能够得到 a 。
+     * @date: 2021-08-24
+     */
+    public int subsetXORSum(int[] nums) {
+        List<Integer> currentList = new ArrayList<>();
+        return subsetXORSumBacktrack(0, currentList, nums);
+    }
+    private int subsetXORSumBacktrack(int current, List<Integer> currentList, int[] nums) {
+        int result = currentList.stream().mapToInt(i -> i).reduce(0, (a, b) -> a ^ b);
+        for (int i = current ; i < nums.length ; i++) {
+            currentList.add(nums[i]);
+
+            result += subsetXORSumBacktrack(i+1, currentList, nums);
+
+            currentList.remove(currentList.size()-1);
+        }
+        return result;
     }
 }

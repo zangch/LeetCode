@@ -28,4 +28,20 @@ class BacktrackTest {
     void combine() {
         System.out.println(backtrack.combine(5,3));
     }
+    @Test
+    void subsets() {
+        System.out.println(backtrack.subsets(new int[]{0,1,2}));
+    }
+    @Test
+    void permute() {
+        System.out.println(backtrack.permute(new int[]{0,1,2}));
+    }
+    @Test
+    void permuteUnique() {
+        System.out.println(backtrack.permuteUnique(new int[]{0,1,1}));
+    }
+    @Test
+    void subsetXORSum() {
+        System.out.println(backtrack.subsetXORSum(new int[]{5,1,6}));
+    }
 }
