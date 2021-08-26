@@ -334,4 +334,179 @@ public class Backtrack {
             generateParenthesisBacktrack(index+1, l, r+1, current, result, n);
         }
     }
+    /**
+     * @author: zangch
+     * @describe: 79. 单词搜索
+     * 给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+     * 单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+     * @date: 2021-08-26
+     */
+    public boolean exist(char[][] board, String word) {
+        boolean[][] current = new boolean[board.length][board[0].length];
+        return  existBacktrack(0, 0, 0, current, board, word);
+    }
+    private boolean existBacktrack(int index, int x, int y, boolean[][] current, char[][] board, String word) {
+        boolean result = false;
+        if (index == word.length()) {
+            return true;
+        }
+        if (index == 0) {
+            for (int i = 0 ; i < board.length ; i++) {
+                for (int j = 0 ; j < board[0].length ; j++) {
+                    if (!current[i][j] && board[i][j] == word.charAt(index)) {
+                        current[i][j] = true;
+
+                        result = result || existBacktrack(index+1, i, j, current, board, word);
+
+                        current[i][j] = false;
+                    }
+                }
+            }
+        } else {
+            if (x > 0 && !current[x-1][y] && board[x-1][y] == word.charAt(index)) {
+                current[x-1][y] = true;
+
+                result = existBacktrack(index+1, x-1, y, current, board, word);
+
+                current[x-1][y] = false;
+            }
+            if (x < board.length-1 && !current[x+1][y] && board[x+1][y] == word.charAt(index)) {
+                current[x+1][y] = true;
+
+                result = result || existBacktrack(index+1, x+1, y, current, board, word);
+
+                current[x+1][y] = false;
+            }
+            if (y > 0 && !current[x][y-1] && board[x][y-1] == word.charAt(index)) {
+                current[x][y-1] = true;
+
+                result = result || existBacktrack(index+1, x, y-1, current, board, word);
+
+                current[x][y-1] = false;
+            }
+            if (y < board[0].length-1 && !current[x][y+1] && board[x][y+1] == word.charAt(index)) {
+                current[x][y+1] = true;
+
+                result = result || existBacktrack(index+1, x, y+1, current, board, word);
+
+                current[x][y+1] = false;
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 90. 子集 II
+     * 给你一个整数数组 nums ，其中可能包含重复元素，请你返回该数组所有可能的子集（幂集）。
+     * 解集 不能 包含重复的子集。返回的解集中，子集可以按 任意顺序 排列。
+     * @date: 2021-08-26
+     */
+    public List<List<Integer>> subsetsWithDup(int[] nums) {
+        Arrays.sort(nums);
+        boolean[] current = new boolean[nums.length];
+        List<Integer> currentList = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
+        subsetsWithDupBacktrack(0, current, currentList, result, nums);
+        return result;
+    }
+    private void subsetsWithDupBacktrack(int index, boolean[] current, List<Integer> currentList, List<List<Integer>> result, int[] nums) {
+        result.add(new ArrayList<>(currentList));
+        for (int i = index ; i < nums.length ; i++) {
+            if (i > 0 && nums[i] == nums[i-1] && !current[i - 1]) {
+                continue;
+            }
+            if (!current[i]) {
+                current[i] = true;
+                currentList.add(nums[i]);
+
+                subsetsWithDupBacktrack(i+1, current, currentList, result, nums);
+
+                current[i] = false;
+                currentList.remove(currentList.size()-1);
+            }
+        }
+    }
+    /**
+     * @author: zangch
+     * @describe: 37. 解数独 🚀
+     * 编写一个程序，通过填充空格来解决数独问题。
+     * 数独的解法需 遵循如下规则：
+     * 数字 1-9 在每一行只能出现一次。
+     * 数字 1-9 在每一列只能出现一次。
+     * 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
+     * 数独部分空格内已填入了数字，空白格用 '.' 表示。
+     * @date: 2021-08-26 1h
+     */
+    public void solveSudoku(char[][] board) {
+        char[][] result = new char[9][9];
+        boolean[][][] current = new boolean[3][10][10];
+        for (int i = 0 ; i < 9 ; i++) {
+            for (int j = 0 ; j < 9 ; j++) {
+                if (board[i][j] != '.') {
+                    current[0][i][board[i][j]-'0'] = true;
+                    current[1][j][board[i][j]-'0'] = true;
+                    current[2][i/3 +1 + j/3*3][board[i][j]-'0'] = true;
+                }
+            }
+        }
+        solveSudokuBacktrack(current, new int[]{0,0},result, board);
+        for (int i = 0 ; i < 9 ; i++) {
+            System.arraycopy(result[i], 0, board[i], 0, 9);
+        }
+    }
+    private void solveSudokuBacktrack(boolean[][][] current, int[] index, char[][] result, char[][] board) {
+        if (index[0] == 9) {
+            for (int i = 0 ; i < 9 ; i++) {
+                System.arraycopy(board[i], 0, result[i], 0, 9);
+            }
+            return;
+        }
+        if (board[index[0]][index[1]] == '.'){
+            for (int i = 1 ; i < 10 ; i++) {
+                if (current[0][index[0]][i] || current[1][index[1]][i] || current[2][index[0]/3 +1 + index[1]/3*3][i]) {
+                    continue;
+                }
+                current[0][index[0]][i] = true;
+                current[1][index[1]][i] = true;
+                current[2][index[0]/3 +1 + index[1]/3*3][i] = true;
+                board[index[0]][index[1]] = (char) (i + '0');
+                if (index[1] < 8) {
+                    index[1]++;
+                } else {
+                    index[0]++;
+                    index[1]=0;
+                }
+
+                solveSudokuBacktrack(current, index, result, board);
+
+                if (index[1] == 0) {
+                    index[0]--;
+                    index[1]=8;
+                } else {
+                    index[1]--;
+                }
+                current[0][index[0]][i] = false;
+                current[1][index[1]][i] = false;
+                current[2][index[0]/3 +1 + index[1]/3*3][i] = false;
+                board[index[0]][index[1]] = '.';
+            }
+        } else {
+            if (index[1] < 8) {
+                index[1]++;
+            } else {
+                index[0]++;
+                index[1]=0;
+            }
+
+            solveSudokuBacktrack(current, index, result, board);
+
+            if (index[1] == 0) {
+                index[0]--;
+                index[1]=8;
+            } else {
+                index[1]--;
+            }
+        }
+    }
+
 }

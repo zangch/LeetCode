@@ -19,4 +19,8 @@ class DoublePointerTest {
     void reverseStr() {
         System.out.println(doublePointer.reverseStr("hello world , I am IronMan", 3));
     }
+    @Test
+    void numRescueBoats() {
+        System.out.println(doublePointer.numRescueBoats(new int[]{1,2,3,4,5}, 6));
+    }
 }

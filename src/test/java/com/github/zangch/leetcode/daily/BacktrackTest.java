@@ -48,4 +48,16 @@ class BacktrackTest {
     void generateParenthesis() {
         System.out.println(backtrack.generateParenthesis(3));
     }
+    @Test
+    void exist() {
+        System.out.println(backtrack.exist(new char[][]{{'a','b'}}, "ab"));
+    }
+    @Test
+    void subsetsWithDup() {
+        System.out.println(backtrack.subsetsWithDup(new int[]{1,0,2,0,0}));
+    }
+    @Test
+    void solveSudoku() {
+        backtrack.solveSudoku(new char[][]{{'5', '3', '.', '.', '7', '.', '.', '.', '.'}, {'6', '.', '.', '1', '9', '5', '.', '.', '.'}, {'.', '9', '8', '.', '.', '.', '.', '6', '.'}, {'8', '.', '.', '.', '6', '.', '.', '.', '3'}, {'4', '.', '.', '8', '.', '3', '.', '.', '1'}, {'7', '.', '.', '.', '2', '.', '.', '.', '6'}, {'.', '6', '.', '.', '.', '.', '2', '8', '.'}, {'.', '.', '.', '4', '1', '9', '.', '.', '5'}, {'.', '.', '.', '.', '8', '.', '.', '7', '9'}});
+    }
 }

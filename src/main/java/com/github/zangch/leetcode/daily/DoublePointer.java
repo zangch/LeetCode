@@ -1,5 +1,7 @@
 package com.github.zangch.leetcode.daily;
 
+import java.util.Arrays;
+
 /**
  * @author: zangch
  * @describe: 双指针
@@ -49,5 +51,25 @@ public class DoublePointer {
             }
         }
         return s;
+    }
+    /**
+     * @author: zangch
+     * @describe: 881. 救生艇
+     * 第 i 个人的体重为 people[i]，每艘船可以承载的最大重量为 limit。
+     * 每艘船最多可同时载两人，但条件是这些人的重量之和最多为 limit。
+     * 返回载到每一个人所需的最小船数。(保证每个人都能被船载)。
+     * @date: 2021-08-26
+     */
+    public int numRescueBoats(int[] people, int limit) {
+        int count = 0, j = people.length-1;
+        Arrays.sort(people);
+        for (int i = 0 ; i <= j ; i++) {
+            if (people[i] + people[j] > limit) {
+                i--;
+            }
+            j--;
+            count++;
+        }
+        return count;
     }
 }
