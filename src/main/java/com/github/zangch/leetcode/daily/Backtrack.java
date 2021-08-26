@@ -13,32 +13,51 @@ import java.util.stream.Stream;
 public class Backtrack {
     /**
      * @author: zangch
-     * @describe: 526. 优美的排列 🥦
+     * @describe: 526. 优美的排列
      * 假设有从 1 到 N 的 N 个整数，如果从这 N 个数字中成功构造出一个数组，使得数组的第 i 位 (1 <= i <= N)
      * 满足如下两个条件中的一个，我们就称这个数组为一个优美的排列。条件：
      * 第 i 位的数字能被 i整除
      * i 能被第 i 位上的数字整除
      * 现在给定一个整数 N，请问可以构造多少个优美的排列？
-     * @date: 2021-08-16
+     * @date: 2021-08-16 ~ 26
      */
     public int countArrangement(int n) {
+        boolean[] current = new boolean[n+1];
         int[] nums = new int[n+1];
         for (int i = 1 ; i <= n ; i++) {
             nums[i] = i;
         }
-        return countArrangementBackTrack( 1, 0, nums);
+        return countArrangementBackTrack(1, current, nums);
     }
-    private int countArrangementBackTrack(int index, int count, int[] nums){
+    private int countArrangementBackTrack(int index, boolean[] current, int[] nums) {
+        int count = 0;
+        if (index == nums.length) {
+            return 1;
+        }
+        for (int i = 1 ; i < nums.length ; i++) {
+            if (!current[i] && (index % i ==0 || i % index ==0)) {
+                current[i] = true;
+
+                count += countArrangementBackTrack(index+1, current, nums);
+
+                current[i] = false;
+            }
+        }
+        return count;
+    }
+    private int countArrangementBackTrack(int index, int[] nums){
+        int count = 0 ;
         if (index == nums.length) {
             return ++count;
         }
         for (int i = index ; i < nums.length ; i++) {
-            if ((nums[index] % i == 0 || i % nums[index] == 0) && (nums[i] % index == 0 || index % nums[i] == 0)) {
+//            if ((nums[current] % i == 0 || i % nums[current] == 0) && (nums[i] % current == 0 || current % nums[i] == 0)) {
+            if(index % i == 0 || i % index == 0){
                 int temp = nums[index];
                 nums[index] = nums[i];
                 nums[i] = temp;
 
-                count = countArrangementBackTrack(index+1, count, nums);
+                count += countArrangementBackTrack(index+1, nums);
 
                 temp = nums[index];
                 nums[index] = nums[i];
@@ -109,11 +128,11 @@ public class Backtrack {
     }
     /**
      * @author: zangch
-     * @describe: 40. 组合总和 II 🥦
+     * @describe: 40. 组合总和 II
      * 给定一个数组 candidates 和一个目标数 target ，找出 candidates 中所有可以使数字和为 target 的组合。
      * candidates中的每个数字在每个组合中只能使用一次。
      * 注意：解集不能包含重复的组合。
-     * @date: 2021-08-17
+     * @date: 2021-08-17 ~ 25
      */
     public List<List<Integer>> combinationSum2(int[] candidates, int target) {
         Arrays.sort(candidates);
@@ -129,17 +148,23 @@ public class Backtrack {
         } else if (current > target) {
             return;
         }
-        for (int i = index ; i < candidates.length-1 ; i++) {
-            if (index > 0 && candidates[index] == candidates[index-1]) {
+        for (int i = index ; i < candidates.length ; i++) {
+            if (index < i && candidates[i] == candidates[i-1]) {
                 continue;
             }
-            current += candidates[i];
-            currentList.add(candidates[i]);
+            int temp = candidates[i];
+            candidates[i] = candidates[index];
+            candidates[index] = temp;
+            current += candidates[index];
+            currentList.add(candidates[index]);
 
-            combinationSum2Backtrack(current, index+1, currentList, result, candidates, target);
+            combinationSum2Backtrack(current, i+1, currentList, result, candidates, target);
 
-            current -= candidates[i];
+            current -= candidates[index];
             currentList.remove(currentList.size()-1);
+            temp = candidates[i];
+            candidates[i] = candidates[index];
+            candidates[index] = temp;
         }
     }
     /**
@@ -202,7 +227,7 @@ public class Backtrack {
      * @author: zangch
      * @describe: 46. 全排列
      * 给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
-     * @date: 2021-08-24
+     * @date: 2021-08-24 ~ 26
      */
     public List<List<Integer>> permute(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
@@ -227,29 +252,35 @@ public class Backtrack {
     }
     /**
      * @author: zangch
-     * @describe: 47. 全排列 II 🥦
+     * @describe: 47. 全排列 II
      * 给定一个可包含重复数字的序列 nums ，按任意顺序 返回所有不重复的全排列。
      * @date: 2021-08-24
      */
     public List<List<Integer>> permuteUnique(int[] nums) {
+        boolean[] current = new boolean[nums.length];
         List<Integer> currentList = new ArrayList<>();
         List<List<Integer>> result = new ArrayList<>();
-//        Arrays.sort(nums);
-        permuteUniqueBacktrack(0,currentList, result, nums);
+        Arrays.sort(nums);
+        permuteUniqueBacktrack(current, currentList, result, nums);
         return result;
     }
-    private void permuteUniqueBacktrack(int current,List<Integer> currentList, List<List<Integer>> result, int[] nums) {
-        if (current == nums.length) {
+    private void permuteUniqueBacktrack(boolean[] current, List<Integer> currentList, List<List<Integer>> result, int[] nums) {
+        if (currentList.size() == nums.length) {
             result.add(new ArrayList<>(currentList));
         }
-        for (int i = current ; i < nums.length ; i++) {
-            currentList.add(nums[i]);
-            current++;
+        for (int i = 0 ; i < nums.length ; i++) {
+            if (i > 0 && nums[i] == nums[i-1] && !current[i - 1]) {
+                continue;
+            }
+            if (!current[i]) {
+                current[i] = true;
+                currentList.add(nums[i]);
 
-            permuteUniqueBacktrack(current, currentList, result, nums);
+                permuteUniqueBacktrack(current, currentList, result, nums);
 
-            currentList.remove(currentList.size()-1);
-            current--;
+                currentList.remove(currentList.size()-1);
+                current[i] = false;
+            }
         }
     }
     /**
@@ -276,5 +307,31 @@ public class Backtrack {
             currentList.remove(currentList.size()-1);
         }
         return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 22. 括号生成
+     * 数字 n 代表生成括号的对数，请你设计一个函数，用于能够生成所有可能的并且 有效的 括号组合。
+     * 有效括号组合需满足：左括号必须以正确的顺序闭合。
+     * @date: 2021-08-25
+     */
+    public List<String> generateParenthesis(int n) {
+        List<String> result = new ArrayList<>();
+        generateParenthesisBacktrack(0, 0, 0, "", result, n);
+        return result;
+    }
+    private void generateParenthesisBacktrack(int index, int l, int r, String current, List<String> result, int n) {
+        if (index == n*2) {
+            result.add(current);
+        }
+        if (l < n) {
+            current += "(";
+            generateParenthesisBacktrack(index+1, l+1, r, current, result, n);
+            current = current.substring(0, current.length()-1);
+        }
+        if (r < l && r < n) {
+            current += ")";
+            generateParenthesisBacktrack(index+1, l, r+1, current, result, n);
+        }
     }
 }

@@ -38,10 +38,14 @@ class BacktrackTest {
     }
     @Test
     void permuteUnique() {
-        System.out.println(backtrack.permuteUnique(new int[]{0,1,1}));
+        System.out.println(backtrack.permuteUnique(new int[]{0,2,1,0,0}));
     }
     @Test
     void subsetXORSum() {
         System.out.println(backtrack.subsetXORSum(new int[]{5,1,6}));
+    }
+    @Test
+    void generateParenthesis() {
+        System.out.println(backtrack.generateParenthesis(3));
     }
 }
