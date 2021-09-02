@@ -2,6 +2,8 @@ package com.github.zangch.leetcode.daily;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+
 /**
  * @author: zangch
  * @describe:
@@ -58,6 +60,18 @@ class BacktrackTest {
     }
     @Test
     void solveSudoku() {
-        backtrack.solveSudoku(new char[][]{{'5', '3', '.', '.', '7', '.', '.', '.', '.'}, {'6', '.', '.', '1', '9', '5', '.', '.', '.'}, {'.', '9', '8', '.', '.', '.', '.', '6', '.'}, {'8', '.', '.', '.', '6', '.', '.', '.', '3'}, {'4', '.', '.', '8', '.', '3', '.', '.', '1'}, {'7', '.', '.', '.', '2', '.', '.', '.', '6'}, {'.', '6', '.', '.', '.', '.', '2', '8', '.'}, {'.', '.', '.', '4', '1', '9', '.', '.', '5'}, {'.', '.', '.', '.', '8', '.', '.', '7', '9'}});
+        System.out.println(Arrays.deepToString(backtrack.solveSudoku(new char[][]{{'5', '3', '.', '.', '7', '.', '.', '.', '.'}, {'6', '.', '.', '1', '9', '5', '.', '.', '.'}, {'.', '9', '8', '.', '.', '.', '.', '6', '.'}, {'8', '.', '.', '.', '6', '.', '.', '.', '3'}, {'4', '.', '.', '8', '.', '3', '.', '.', '1'}, {'7', '.', '.', '.', '2', '.', '.', '.', '6'}, {'.', '6', '.', '.', '.', '.', '2', '8', '.'}, {'.', '.', '.', '4', '1', '9', '.', '.', '5'}, {'.', '.', '.', '.', '8', '.', '.', '7', '9'}})));
+    }
+    @Test
+    void solveNQueens() {
+        System.out.println(backtrack.solveNQueens(6));
+    }
+    @Test
+    void restoreIpAddresses() {
+        System.out.println(backtrack.restoreIpAddresses("010010"));
+    }
+    @Test
+    void totalNQueens() {
+        System.out.println(backtrack.totalNQueens(9));
     }
 }

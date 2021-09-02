@@ -435,78 +435,153 @@ public class Backtrack {
      * 数字 1-9 在每一列只能出现一次。
      * 数字 1-9 在每一个以粗实线分隔的 3x3 宫内只能出现一次。（请参考示例图）
      * 数独部分空格内已填入了数字，空白格用 '.' 表示。
-     * @date: 2021-08-26 1h
+     * @date: 2021-08-26
      */
-    public void solveSudoku(char[][] board) {
-        char[][] result = new char[9][9];
+    public char[][] solveSudoku(char[][] board) {
         boolean[][][] current = new boolean[3][10][10];
         for (int i = 0 ; i < 9 ; i++) {
             for (int j = 0 ; j < 9 ; j++) {
                 if (board[i][j] != '.') {
-                    current[0][i][board[i][j]-'0'] = true;
-                    current[1][j][board[i][j]-'0'] = true;
-                    current[2][i/3 +1 + j/3*3][board[i][j]-'0'] = true;
+                    current[0][i][board[i][j]-'0'] = current[1][j][board[i][j]-'0'] = current[2][i/3 +1 + j/3*3][board[i][j]-'0'] = true;
                 }
             }
         }
-        solveSudokuBacktrack(current, new int[]{0,0},result, board);
-        for (int i = 0 ; i < 9 ; i++) {
-            System.arraycopy(result[i], 0, board[i], 0, 9);
-        }
+        solveSudokuBacktrack(current, new int[]{0,0}, board);
+        return board;
     }
-    private void solveSudokuBacktrack(boolean[][][] current, int[] index, char[][] result, char[][] board) {
-        if (index[0] == 9) {
-            for (int i = 0 ; i < 9 ; i++) {
-                System.arraycopy(board[i], 0, result[i], 0, 9);
+    private boolean solveSudokuBacktrack(boolean[][][] current, int[] index, char[][] board) {
+        if (index[1] == 9) {
+            index[1]=0;
+            index[0]++;
+            if (index[0] == 9){
+                return true;
             }
-            return;
         }
         if (board[index[0]][index[1]] == '.'){
             for (int i = 1 ; i < 10 ; i++) {
                 if (current[0][index[0]][i] || current[1][index[1]][i] || current[2][index[0]/3 +1 + index[1]/3*3][i]) {
                     continue;
                 }
-                current[0][index[0]][i] = true;
-                current[1][index[1]][i] = true;
-                current[2][index[0]/3 +1 + index[1]/3*3][i] = true;
+                current[0][index[0]][i] = current[1][index[1]][i] = current[2][index[0]/3 +1 + index[1]/3*3][i] = true;
                 board[index[0]][index[1]] = (char) (i + '0');
-                if (index[1] < 8) {
-                    index[1]++;
-                } else {
-                    index[0]++;
-                    index[1]=0;
+
+                if (solveSudokuBacktrack(current, new int[]{index[0],index[1]+1}, board)) {
+                    return true;
                 }
 
-                solveSudokuBacktrack(current, index, result, board);
-
-                if (index[1] == 0) {
-                    index[0]--;
-                    index[1]=8;
-                } else {
-                    index[1]--;
-                }
-                current[0][index[0]][i] = false;
-                current[1][index[1]][i] = false;
-                current[2][index[0]/3 +1 + index[1]/3*3][i] = false;
-                board[index[0]][index[1]] = '.';
+                current[0][index[0]][i] = current[1][index[1]][i] = current[2][index[0]/3 +1 + index[1]/3*3][i] = false;
             }
         } else {
-            if (index[1] < 8) {
-                index[1]++;
-            } else {
-                index[0]++;
-                index[1]=0;
-            }
+            return solveSudokuBacktrack(current, new int[]{index[0], index[1]+1}, board);
+        }
+        return false;
+    }
+    /**
+     * @author: zangch
+     * @describe: 51. N 皇后 🚀
+     * n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+     * 给你一个整数 n ，返回所有不同的 n 皇后问题 的解决方案。
+     * 每一种解法包含一个不同的 n 皇后问题 的棋子放置方案，该方案中 'Q' 和 '.' 分别代表了皇后和空位。
+     * @date: 2021-08-27 ~ 09-01
+     */
+    public List<List<String>> solveNQueens(int n) {
+        int[][] current = new int[n][n];
+        List<String> currentList = new ArrayList<>();
+        List<List<String >> result = new ArrayList<>();
+        solveNQueensBacktrack(0, current, currentList, result, n);
+        return result;
+    }
+    private void solveNQueensBacktrack(int index, int[][] current, List<String> currentList, List<List<String>> result, int n) {
+        if (index == n) {
+            result.add(new ArrayList<>(currentList));
+            return;
+        }
+        for (int i =0 ; i < n ; i++){
+            StringBuilder currents = new StringBuilder();
+            if (current[index][i] == 0) {
+                for (int k = 0 ; k < n ; k++) {
+                    if (k == i){
+                        currents.append("Q");
+                        continue;
+                    }
+                    currents.append(".");
+                }
+                currentList.add(currents.toString());
+                for (int j = 0 ; j < n ; j++) {
+                    current[index][j] += 1;
+                    current[j][i] += 1;
+                    if (index+i-j >= 0 && index+i-j < n) {
+                        current[j][index+i-j] += 1;
+                    }
+                    if (index+j < n && i+j < n) {
+                        current[index+j][i+j] += 1;
+                    }
+                    if (index-j >=0 && i-j >= 0) {
+                        current[index-j][i-j] += 1;
+                    }
+                }
 
-            solveSudokuBacktrack(current, index, result, board);
+                solveNQueensBacktrack(index+1, current, currentList, result, n);
 
-            if (index[1] == 0) {
-                index[0]--;
-                index[1]=8;
-            } else {
-                index[1]--;
+                currentList.remove(currentList.size()-1);
+                for (int j = 0 ; j < n ; j++) {
+                    current[index][j] -= 1;
+                    current[j][i] -= 1;
+                    if (index+i-j >= 0 && index+i-j < n) {
+                        current[j][index+i-j] -= 1;
+                    }
+                    if (index+j < n && i+j < n) {
+                        current[index+j][i+j] -= 1;
+                    }
+                    if (index-j >=0 && i-j >= 0) {
+                        current[index-j][i-j] -= 1;
+                    }
+                }
             }
         }
     }
+    /**
+     * @author: zangch
+     * @describe: 93. 复原 IP 地址
+     * 给定一个只包含数字的字符串，用以表示一个 IP 地址，返回所有可能从 s 获得的 有效 IP 地址 。你可以按任何顺序返回答案。
+     * 有效 IP 地址 正好由四个整数（每个整数位于 0 到 255 之间组成，且不能含有前导 0），整数之间用 '.' 分隔。
+     * 例如："0.1.2.201" 和 "192.168.1.1" 是 有效 IP 地址，但是 "0.011.255.245"、"192.168.1.312" 和 "192.168@1.1" 是 无效 IP 地址。
+     * @date: 2021-08-27 ~ 09-01
+     */
+    public List<String> restoreIpAddresses(String s) {
+        List<String> result = new ArrayList<>();
+            restoreIpAddressesBacktrack(0, "",result, s);
+        return result;
+    }
+    private void restoreIpAddressesBacktrack(int index, String ip, List<String> result, String s) {
+        if (ip.split("\\.").length == 4 && index == s.length()) {
+            result.add(ip.substring(0, ip.length()-1));
+            return;
+        }
+        for (int j =1 ; j < 4 && index+j <= s.length() ; j++) {
+            String substring = s.substring(index, index + j);
+            int current = Integer.parseInt(substring);
+            if (j == 2 && current < 10) {
+                break;
+            } else if (j == 3 && current <= 99 || current > 255) {
+                break;
+            }
+            StringBuilder currents = new StringBuilder(ip);
+            ip = currents.append(substring).append(".").toString();
 
+            restoreIpAddressesBacktrack(index+j, ip, result, s);
+
+            ip = ip.substring(0, ip.length()-j-1);
+        }
+    }
+    /**
+     * @author: zangch
+     * @describe: 52. N皇后 II
+     * n 皇后问题 研究的是如何将 n 个皇后放置在 n×n 的棋盘上，并且使皇后彼此之间不能相互攻击。
+     * 给你一个整数 n ，返回 n 皇后问题 不同的解决方案的数量。
+     * @date: 2021-09-01
+     */
+    public int totalNQueens(int n) {
+        return solveNQueens(n).size();
+    }
 }
