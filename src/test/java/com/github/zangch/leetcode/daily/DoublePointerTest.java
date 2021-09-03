@@ -23,4 +23,8 @@ class DoublePointerTest {
     void numRescueBoats() {
         System.out.println(doublePointer.numRescueBoats(new int[]{1,2,3,4,5}, 6));
     }
+    @Test
+    void longestOnes() {
+        System.out.println(doublePointer.longestOnes(new int[]{0,0,0,1}, 4));
+    }
 }

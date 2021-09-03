@@ -72,4 +72,32 @@ public class DoublePointer {
         }
         return count;
     }
+    /**
+     * @author: zangch
+     * @describe: 1004. 最大连续1的个数 III 🥦
+     * 给定一个由若干 0 和 1 组成的数组 A，我们最多可以将 K 个值从 0 变成 1 。
+     * 返回仅包含 1 的最长（连续）子数组的长度。
+     * @date: 2021-09-03
+     */
+    public int longestOnes(int[] nums, int k) {
+        int left = 0, right = 0, count = 0, longest = 0;
+        while (right < nums.length) {
+            if (nums[right] == 0) {
+                count++;
+            }
+            if (k >= count) {
+                right++;
+            } else {
+                longest = Math.max(longest, right-left);
+                if (nums[left] == 0) {
+                    count--;
+                }
+                if (nums[right] == 0) {
+                    count--;
+                }
+                left++;
+            }
+        }
+        return Math.max(longest, right-left);
+    }
 }
