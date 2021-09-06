@@ -27,4 +27,12 @@ class DoublePointerTest {
     void longestOnes() {
         System.out.println(doublePointer.longestOnes(new int[]{0,0,0,1}, 4));
     }
+    @Test
+    void equalSubstring(){
+        System.out.println(doublePointer.equalSubstring("abed", "bade", 3));
+    }
+    @Test
+    void maxAbsoluteSum(){
+        System.out.println(doublePointer.maxAbsoluteSum(new int[]{1,-1,4,-6,2,3,-4,2}));
+    }
 }

@@ -15,4 +15,8 @@ class StreamOperationTest {
     void escapeGhosts() {
         System.out.println(streamOperation.escapeGhosts(new int[][]{{1,2},{0,1}}, new int[]{1,1}));
     }
+    @Test
+    void xorQueries() {
+        System.out.println(Arrays.toString(streamOperation.xorQueries(new int[]{1,1,2,4}, new int[][]{{1,2}, {0,1}})));
+    }
 }

@@ -21,10 +21,6 @@ class RangeSumTest {
         System.out.println(numMatrix.sumRegion(2,1, 4,3));
     }
     @Test
-    void maxSumSubmatrix() {
-        System.out.println(rangeSum.maxSumSubmatrix(new int[][]{{3,0,1,-4,2},{5,6,-3,-2,1},{1,-2,0,-1,5},{-4,-1,0,-1,7},{1,0,3,0,-5}}, 3));
-    }
-    @Test
     void checkSubarraySum() {
         System.out.println(rangeSum.checkSubarraySum(new int[]{23,2,4,6,7}, 6));
     }
@@ -35,5 +31,21 @@ class RangeSumTest {
     @Test
     void numSubarraysWithSum() {
         System.out.println(rangeSum.numSubarraysWithSum(new int[]{0,1,0,1,1,1,1,1,0,1}, 4));
+    }
+    @Test
+    void countTriplets() {
+        System.out.println(rangeSum.countTriplets(new int[]{0,1,0,1,1,1,1,1,0,1}));
+    }
+    @Test
+    void kthLargestValue() {
+        System.out.println(rangeSum.kthLargestValue(new int[][]{{10,9,5},{2,0,4},{1,0,9},{3,4,8}}, 10));
+    }
+    @Test
+    void maxSumSubmatrix() {
+        System.out.println(rangeSum.maxSumSubmatrix(new int[][]{{10,9,5},{2,0,4},{1,0,9},{3,4,8}}, 13));
+    }
+    @Test
+    void numSubmatrixSumTarget() {
+        System.out.println(rangeSum.numSubmatrixSumTarget(new int[][]{{10,9,5},{2,0,4},{1,0,9},{3,4,8}}, 13));
     }
 }

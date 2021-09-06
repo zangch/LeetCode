@@ -74,7 +74,7 @@ public class DoublePointer {
     }
     /**
      * @author: zangch
-     * @describe: 1004. 最大连续1的个数 III 🥦
+     * @describe: 1004. 最大连续1的个数 III
      * 给定一个由若干 0 和 1 组成的数组 A，我们最多可以将 K 个值从 0 变成 1 。
      * 返回仅包含 1 的最长（连续）子数组的长度。
      * @date: 2021-09-03
@@ -99,5 +99,57 @@ public class DoublePointer {
             }
         }
         return Math.max(longest, right-left);
+    }
+    /**
+     * @author: zangch
+     * @describe: 1208. 尽可能使字符串相等
+     * 给你两个长度相同的字符串，s 和 t。
+     * 将 s 中的第 i 个字符变到 t 中的第 i 个字符需要 |s[i] - t[i]| 的开销（开销可能为 0），也就是两个字符的 ASCII 码值的差的绝对值。
+     * 用于变更字符串的最大预算是 maxCost。在转化字符串时，总开销应当小于等于该预算，这也意味着字符串的转化可能是不完全的。
+     * 如果你可以将 s 的子字符串转化为它在 t 中对应的子字符串，则返回可以转化的最大长度。
+     * 如果 s 中没有子字符串可以转化成 t 中对应的子字符串，则返回 0。
+     * @date: 2021-09-03
+     */
+    public int equalSubstring(String s, String t, int maxCost) {
+        int count = 0, r = 0;
+        int[] costSum = new int[s.length()+1];
+        for (int i = 1 ; i <= s.length() ; i++) {
+            costSum[i] = costSum[i-1] + Math.abs(s.charAt(i-1) - t.charAt(i-1));
+        }
+        for (int l = 0 ; l < s.length() ; l++) {
+            while (maxCost >= costSum[r+1] - costSum[l]) {
+                count = Math.max(count, r - l + 1);
+                r++;
+                if (r >= s.length()) {
+                    return count;
+                }
+            }
+        }
+        return count;
+    }
+    /**
+     * @author: zangch
+     * @describe: 1749. 任意子数组和的绝对值的最大值 🥦
+     * 给你一个整数数组 nums 。一个子数组 [numsl, numsl+1, ..., numsr-1, numsr] 的 和的绝对值 为 abs(numsl + numsl+1 + ... + numsr-1 + numsr) 。
+     * 请你找出 nums 中 和的绝对值 最大的任意子数组（可能为空），并返回该 最大值 。
+     * abs(x) 定义如下：
+     * 如果 x 是负整数，那么 abs(x) = -x 。
+     * 如果 x 是非负整数，那么 abs(x) = x 。
+     * @date: 2021-09-03
+     */
+    public int maxAbsoluteSum(int[] nums) {
+        int sum = 0, max = 0, r = 0;
+        for (int num : nums) {
+            while (r < nums.length) {
+                if (sum * nums[r] < 0 && Math.abs(sum) < Math.abs(nums[r])) {
+                    break;
+                }
+                sum += nums[r];
+                r++;
+                max = Math.max(max, Math.abs(sum));
+            }
+            sum -= num;
+        }
+        return max;
     }
 }

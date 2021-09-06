@@ -18,4 +18,19 @@ public class StreamOperation {
     public boolean escapeGhosts(int[][] ghosts, int[] target) {
         return Arrays.stream(ghosts).noneMatch(ghost -> Math.abs(ghost[0] - target[0]) + Math.abs(ghost[1] - target[1]) <= Math.abs(target[0]) + Math.abs(target[1]));
     }
+    /**
+     * @author: zangch
+     * @describe: 1310. 子数组异或查询
+     * 有一个正整数数组 arr，现给你一个对应的查询数组 queries，其中 queries[i] = [Li, Ri]。
+     * 对于每个查询 i，请你计算从 Li 到 Ri 的 XOR 值（即 arr[Li] xor arr[Li+1] xor ... xor arr[Ri]）作为本次查询的结果。
+     * 并返回一个包含给定查询 queries 所有结果的数组。
+     * @date: 2021-09-03
+     */
+    public int[] xorQueries(int[] arr, int[][] queries) {
+        int[] xor = new int[arr.length+1];
+        for (int i = 1 ; i <= arr.length ; i++) {
+            xor[i] = xor[i-1] ^ arr[i-1];
+        }
+        return Arrays.stream(queries).mapToInt(query -> xor[query[1]+1] ^ xor[query[0]]).toArray();
+    }
 }

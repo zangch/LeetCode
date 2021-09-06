@@ -55,13 +55,31 @@ public class RangeSum {
     }
     /**
      * @author: zangch
-     * @describe: 363. 矩形区域不超过 K 的最大数值和
+     * @describe: 363. 矩形区域不超过 K 的最大数值和 🥦
      * 给你一个 m x n 的矩阵 matrix 和一个整数 k ，找出并返回矩阵内部矩形区域的不超过 k 的最大数值和。
      * 题目数据保证总会存在一个数值和不超过 k 的矩形区域。
      * @date: 2021-09-02
      */
     public int maxSumSubmatrix(int[][] matrix, int k) {
-        return matrix.length +k;
+        int max = Integer.MIN_VALUE;
+        int[][] sum = new int[matrix.length+1][matrix[0].length+1];
+        for (int i = 1 ; i <= matrix.length ; i++) {
+            for (int j = 1 ; j <= matrix[0].length ; j++) {
+                sum[i][j] = matrix[i-1][j-1] + sum[i-1][j] + sum[i][j-1] - sum[i-1][j-1];
+            }
+        }
+        for (int i = 1 ; i <= matrix.length ; i++) {
+            for (int j = 1 ; j <= matrix[0].length ; j++) {
+                for (int p = i ; p <= matrix.length ; p++) {
+                    for (int q = j ; q <= matrix[0].length ; q++) {
+                        if (sum[p][q] - sum[i-1][q] - sum[p][j-1] + sum[i-1][j-1] <= k) {
+                            max = Math.max(max, sum[p][q] - sum[i-1][q] - sum[p][j-1] + sum[i-1][j-1]);
+                        }
+                    }
+                }
+            }
+        }
+        return max;
     }
     /**
      * @author: zangch
@@ -130,5 +148,82 @@ public class RangeSum {
             }
         }
         return sum;
+    }
+    /**
+     * @author: zangch
+     * @describe: 1074. 元素和为目标值的子矩阵数量 🥦
+     * 给出矩阵 matrix 和目标值 target，返回元素总和等于目标值的非空子矩阵的数量。
+     * 子矩阵 x1, y1, x2, y2 是满足 x1 <= x <= x2 且 y1 <= y <= y2 的所有单元 matrix[x][y] 的集合。
+     * 如果 (x1, y1, x2, y2) 和 (x1', y1', x2', y2') 两个子矩阵中部分坐标不同（如：x1 != x1'），那么这两个子矩阵也不同。
+     * @date: 2021-09-03
+     */
+    public int numSubmatrixSumTarget(int[][] matrix, int target) {
+        int count = 0;
+        int[][] sum = new int[matrix.length+1][matrix[0].length+1];
+        for (int i = 1 ; i <= matrix.length ; i++) {
+            for (int j = 1 ; j <= matrix[0].length ; j++) {
+                sum[i][j] = matrix[i-1][j-1] + sum[i-1][j] + sum[i][j-1] - sum[i-1][j-1];
+            }
+        }
+        for (int i = 1 ; i <= matrix.length ; i++) {
+            for (int j = 1 ; j <= matrix[0].length ; j++) {
+                for (int p = i ; p <= matrix.length ; p++) {
+                    for (int q = j ; q <= matrix[0].length ; q++) {
+                        if (sum[p][q] - sum[i-1][q] - sum[p][j-1] + sum[i-1][j-1] == target) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
+    /**
+     * @author: zangch
+     * @describe: 1442. 形成两个异或相等数组的三元组数目
+     * 给你一个整数数组 arr 。
+     * 现需要从数组中取三个下标 i、j 和 k ，其中 (0 <= i < j <= k < arr.length) 。
+     * a 和 b 定义如下：
+     * a = arr[i] ^ arr[i + 1] ^ ... ^ arr[j - 1]
+     * b = arr[j] ^ arr[j + 1] ^ ... ^ arr[k]
+     * 注意：^ 表示 按位异或 操作。
+     * 请返回能够令 a == b 成立的三元组 (i, j , k) 的数目。
+     * @date: 2021-09-03
+     */
+    public int countTriplets(int[] arr) {
+        int count = 0;
+        int[] xor = new int[arr.length+1];
+        for (int i = 1 ; i <= arr.length ; i++) {
+            xor[i] = xor[i-1] ^ arr[i-1];
+        }
+        for (int i = 0 ; i < arr.length ; i++) {
+            for (int j = i+1 ; j < arr.length ; j++) {
+                for (int k = j ; k < arr.length ; k++) {
+                    if ((xor[k+1] ^ xor[j]) == (xor[j] ^ xor[i])) {
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+    /**
+     * @author: zangch
+     * @describe: 1738. 找出第 K 大的异或坐标值
+     * 给你一个二维矩阵 matrix 和一个整数 k ，矩阵大小为 m x n 由非负整数组成。
+     * 矩阵中坐标 (a, b) 的 值 可由对所有满足 0 <= i <= a < m 且 0 <= j <= b < n 的元素 matrix[i][j]（下标从 0 开始计数）执行异或运算得到。
+     * 请你找出 matrix 的所有坐标中第 k 大的值（k 的值从 1 开始计数）。
+     * @date: 2021-09-03
+     */
+    public int kthLargestValue(int[][] matrix, int k) {
+        int[] xor = new int[matrix.length * matrix[0].length];
+        for (int i = 0 ; i < matrix.length ; i++) {
+            for (int j = 0 ; j < matrix[0].length ; j++) {
+                matrix[i][j] = matrix[i][j] ^ (i == 0 ? 0 : matrix[i-1][j]) ^ (j ==0 ? 0 : matrix[i][j-1]) ^ (i == 0 || j ==0 ? 0 : matrix[i-1][j-1]);
+                xor[i * matrix[0].length + j] = matrix[i][j];
+            }
+        }
+        Arrays.sort(xor);
+        return xor[xor.length-k];
     }
 }
