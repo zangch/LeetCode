@@ -1,6 +1,6 @@
 package com.github.zangch.leetcode.daily;
 
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * @author: zangch
@@ -151,5 +151,49 @@ public class DoublePointer {
             sum -= num;
         }
         return max;
+    }
+    /**
+     * @author: zangch
+     * @describe: 11. 盛最多水的容器
+     * 给你 n 个非负整数 a1，a2，...，an，每个数代表坐标中的一个点 (i, ai) 。在坐标内画 n 条垂直线，垂直线 i 的两个端点分别为 (i, ai) 和 (i, 0) 。找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+     * 说明：你不能倾斜容器。
+     * @date: 2021-09-06
+     */
+    public int maxArea(int[] height) {
+        int left = 0, right = height.length-1, max = 0;
+        while (left < right) {
+            max = Math.max(max, (right-left) * Math.min(height[left], height[right]));
+            if (height[left] > height[right]) {
+                right--;
+            } else {
+                left++;
+            }
+        }
+        return max;
+    }
+    /**
+     * @author: zangch
+     * @describe: 15. 三数之和 🥦
+     * 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+     * 注意：答案中不可以包含重复的三元组。
+     * @date: 2021-09-06
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        Map<Integer, List<List<Integer>>> sum = new HashMap<>();
+        for (int i = 0 ; i < nums.length ; i++) {
+            for (int j = i+1 ; j < nums.length ; j++) {
+                if (sum.containsKey(-nums[j])) {
+                    for (List<Integer> temp : sum.get(-nums[j])){
+                        temp.add(nums[j]);
+                        result.add(temp);
+                    }
+                }
+                List<List<Integer>> temp = sum.getOrDefault(nums[i] + nums[j], new ArrayList<>());
+                temp.add(Arrays.asList(nums[i], nums[j]));
+                sum.putIfAbsent(nums[i] + nums[j],temp);
+            }
+        }
+        return result;
     }
 }

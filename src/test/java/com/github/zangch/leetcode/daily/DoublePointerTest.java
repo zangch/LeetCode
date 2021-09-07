@@ -35,4 +35,12 @@ class DoublePointerTest {
     void maxAbsoluteSum(){
         System.out.println(doublePointer.maxAbsoluteSum(new int[]{1,-1,4,-6,2,3,-4,2}));
     }
+    @Test
+    void maxArea(){
+        System.out.println(doublePointer.maxArea(new int[]{1,2,4,6,2,3,4,2}));
+    }
+    @Test
+    void threeSum(){
+        System.out.println(doublePointer.threeSum(new int[]{1,2,4,6,2,3,4,2}));
+    }
 }
