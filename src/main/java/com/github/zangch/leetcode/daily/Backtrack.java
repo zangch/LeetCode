@@ -584,4 +584,63 @@ public class Backtrack {
     public int totalNQueens(int n) {
         return solveNQueens(n).size();
     }
+    /**
+     * @author: zangch
+     * @describe: 212. 单词搜索 II
+     * 给定一个 m x n 二维字符网格 board 和一个单词（字符串）列表 words，找出所有同时在二维网格和字典中出现的单词。
+     * 单词必须按照字母顺序，通过 相邻的单元格 内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母在一个单词中不允许被重复使用。
+     * @date: 2021-09-16
+     */
+    public List<String> findWords(char[][] board, String[] words) {
+        List<String> result = new ArrayList<>();
+        for (String word : words) {
+            find: for (int i = 0 ; i < board.length ; i++) {
+                for (int j = 0 ; j < board[0].length ; j++) {
+                    if (board[i][j] == word.charAt(0)) {
+                        boolean[][] current = new boolean[board.length][board[0].length];
+                        current[i][j] = true;
+                        if (findWordsBacktrack(1, i, j, current, result, board, word))
+                            break find;
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    private boolean findWordsBacktrack(int index, int x, int y, boolean[][] current, List<String> result, char[][] board, String word) {
+        if (index == word.length()) {
+            result.add(word);
+            return true;
+        }
+        // 向左走一步
+        if (x > 0 && !current[x -1][y] && board[x -1][y] == word.charAt(index)) {
+            current[x -1][y] = true;
+            if (findWordsBacktrack(index +1, x -1, y, current, result, board, word))
+                return true;
+            current[x -1][y] = false;
+        }
+        // 向右走一步
+        if (x < board.length -1 && !current[x +1][y] && board[x +1][y] == word.charAt(index)) {
+            current[x +1][y] = true;
+            if (findWordsBacktrack(index +1, x +1, y, current, result, board, word))
+                return true;
+            current[x +1][y] = false;
+        }
+        // 向上走一步
+        if (y > 0 && !current[x][y -1] && board[x][y -1] == word.charAt(index)) {
+            current[x][y -1] = true;
+            if (findWordsBacktrack(index +1, x, y -1, current, result, board, word))
+                return true;
+            current[x][y -1] = false;
+        }
+        // 向右走一步
+        if (y < board[0].length -1 && !current[x][y +1] && board[x][y +1] == word.charAt(index)) {
+            current[x][y +1] = true;
+            if (findWordsBacktrack(index +1, x, y +1, current, result, board, word))
+                return true;
+            current[x][y +1] = false;
+        }
+        return false;
+    }
+
 }

@@ -2,7 +2,7 @@ package com.github.zangch.leetcode.daily;
 
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
+import java.util.Arrays;
 
 /**
  * @author: zangch
@@ -42,5 +42,17 @@ class DoublePointerTest {
     @Test
     void threeSum(){
         System.out.println(doublePointer.threeSum(new int[]{1,2,4,6,2,3,4,2}));
+    }
+    @Test
+    void rotate(){
+        System.out.println(Arrays.toString(doublePointer.rotate(new int[]{1,9}, 3)));
+    }
+    @Test
+    void splitArray(){
+        System.out.println(doublePointer.splitArray(new int[]{2,5,2,7,11,13,17,5}));
+    }
+    @Test
+    void findPeakElement(){
+        System.out.println(doublePointer.findPeakElement(new int[]{1,2}));
     }
 }

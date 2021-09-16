@@ -1,6 +1,7 @@
 package com.github.zangch.leetcode.daily;
 
-import java.util.Arrays;
+import java.util.*;
+
 /**
  * @author: zangch
  * @describe: 流操作
@@ -32,5 +33,49 @@ public class StreamOperation {
             xor[i] = xor[i-1] ^ arr[i-1];
         }
         return Arrays.stream(queries).mapToInt(query -> xor[query[1]+1] ^ xor[query[0]]).toArray();
+    }
+    /**
+     * @author: zangch
+     * @describe: 447. 回旋镖的数量
+     * 给定平面上 n 对 互不相同 的点 points ，其中 points[i] = [xi, yi] 。回旋镖 是由点 (i, j, k) 表示的元组 ，其中 i 和 j 之间的距离和 i 和 k 之间的距离相等（需要考虑元组的顺序）。
+     * 返回平面上所有回旋镖的数量。
+     * @date: 2021-09-13
+     */
+    public int numberOfBoomerangs(int[][] points) {
+        return Arrays.stream(points).mapToInt(o -> {
+            Map<Double, Integer> distance = new HashMap<>();
+            Arrays.stream(points).forEach(p -> {
+                Double d = Math.pow(p[0] - o[0], 2) + Math.pow(p[1] - o[1], 2);
+                distance.put(d, distance.getOrDefault(d, 0) +1);
+            });
+            return distance.values().stream().mapToInt(n -> n * (n -1)).sum();
+        }).sum();
+    }
+    /**
+     * @author: zangch
+     * @describe: 524. 通过删除字母匹配到字典里最长单词
+     * 给你一个字符串 s 和一个字符串数组 dictionary 作为字典，找出并返回字典中最长的字符串，该字符串可以通过删除 s 中的某些字符得到。
+     * 如果答案不止一个，返回长度最长且字典序最小的字符串。如果答案不存在，则返回空字符串。
+     * @date: 2021-09-14
+     */
+    public String findLongestWord(String s, List<String> dictionary) {
+        String longest = "";
+        for (String d : dictionary) {
+            int i = 0, j = 0;
+            while (i < s.length()) {
+                if (s.charAt(i++) == d.charAt(j)) {
+                    j++;
+                }
+                if (j == d.length()) {
+                    if (longest.length() < j) {
+                        longest = d;
+                    } else if (longest.length() == j && d.compareTo(longest) < 0) {
+                        longest = d;
+                    }
+                    break;
+                }
+            }
+        }
+        return longest;
     }
 }

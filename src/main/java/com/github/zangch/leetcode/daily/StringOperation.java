@@ -1,5 +1,7 @@
 package com.github.zangch.leetcode.daily;
 
+import java.util.*;
+
 /**
  * @author: zangch
  * @describe: 字符串操作
@@ -28,4 +30,93 @@ public class StringOperation {
         }
         return 0;
     }
+    /**
+     * @author: zangch
+     * @describe: LCP 13. 寻宝 🥦
+     * 我们得到了一副藏宝图，藏宝图显示，在一个迷宫中存在着未被世人发现的宝藏。
+     * 迷宫是一个二维矩阵，用一个字符串数组表示。它标识了唯一的入口（用 'S' 表示），和唯一的宝藏地点（用 'T' 表示）。但是，宝藏被一些隐蔽的机关保护了起来。在地图上有若干个机关点（用 'M' 表示），只有所有机关均被触发，才可以拿到宝藏。
+     * 要保持机关的触发，需要把一个重石放在上面。迷宫中有若干个石堆（用 'O' 表示），每个石堆都有无限个足够触发机关的重石。但是由于石头太重，我们一次只能搬一个石头到指定地点。
+     * 迷宫中同样有一些墙壁（用 '#' 表示），我们不能走入墙壁。剩余的都是可随意通行的点（用 '.' 表示）。石堆、机关、起点和终点（无论是否能拿到宝藏）也是可以通行的。
+     * 我们每步可以选择向上/向下/向左/向右移动一格，并且不能移出迷宫。搬起石头和放下石头不算步数。那么，从起点开始，我们最少需要多少步才能最后拿到宝藏呢？如果无法拿到宝藏，返回 -1 。
+     * @date: 2021-09-09
+     */
+    public int minimalSteps(String[] maze) {
+        int mCount = 0;
+        for (String m : maze) {
+            for (int i = 0 ; i < m.length() ; i++) {
+                if (m.charAt(i) == 'M') mCount++;
+            }
+        }
+        int minSteps = 0;
+        Integer[] index = new Integer[]{0,0};
+        Boolean[][] m = new Boolean[maze.length][maze[0].length()];
+        for (Boolean[] mm : m) {
+            Arrays.fill(mm, true);
+        }
+        findIndex('S', index, maze, m);
+        while (mCount-- > 0) {
+            int mPath = findIndex('M', index, maze, m);
+            m[index[0]][index[1]] = true;
+            int oPath = findIndex('O', index, maze, m);
+            if (mPath == 0 || oPath == 0) {
+                return -1;
+            }
+            minSteps += mPath + oPath;
+        }
+        int tPath = findIndex('T', index, maze, m);
+        if (tPath == 0) {
+            return -1;
+        }
+        return minSteps + tPath;
+    }
+    private int findIndex(char target, Integer[] index, String[] maze, Boolean[][] m) {
+        int path = 0;
+        Boolean[][] through = new Boolean[m.length][m[0].length];
+        for (int i = 0 ; i < m.length ; i++) {
+            System.arraycopy(m[i], 0, through[i], 0, through[0].length);
+        }
+        through[index[0]][index[1]] = true;
+        List<Integer[]> current = Collections.singletonList(index);
+        while (current.size() != 0) {
+            path++;
+            List<Integer[]> next = new ArrayList<>();
+            for (Integer[] in : current) {
+                if (in[0]+1 < maze.length && !through[in[0]+1][in[1]]) {
+                    if (maze[in[0]+1].charAt(in[1]) == target) {
+                        return path;
+                    } else if (maze[in[0]+1].charAt(in[1]) != '#') {
+                        next.add(new Integer[]{in[0] + 1, in[1]});
+                    }
+                    through[in[0]+1][in[1]] = true;
+                }
+                if (in[1]+1 < maze.length && !through[in[0]][in[1]+1]) {
+                    if (maze[in[0]].charAt(in[1]+1) == target) {
+                        return path;
+                    } else if (maze[in[0]].charAt(in[1]+1) != '#') {
+                        next.add(new Integer[]{in[0], in[1]+1});
+                    }
+                    through[in[0]][in[1]+1] = true;
+                }
+                if (in[0]-1 >= 0) {
+                    if (maze[in[0]-1].charAt(in[1]) == target && !through[in[0]-1][in[1]]) {
+                        return path;
+                    } else if (maze[in[0]-1].charAt(in[1]) != '#') {
+                        next.add(new Integer[]{in[0]-1, in[1]});
+                    }
+                    through[in[0]-1][in[1]] = true;
+                }
+                if (in[1]-1 >= 0) {
+                    if (maze[in[0]].charAt(in[1]-1) == target && !through[in[0]][in[1]-1]) {
+                        return path;
+                    } else if (maze[in[0]].charAt(in[1]-1) != '#') {
+                        next.add(new Integer[]{in[0], in[1]-1});
+                    }
+                    through[in[0]][in[1]-1] = true;
+                }
+                current = next;
+            }
+        }
+        return path;
+    }
+
 }

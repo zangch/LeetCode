@@ -196,4 +196,93 @@ public class DoublePointer {
         }
         return result;
     }
+    /**
+     * @author: zangch
+     * @describe: 189. 旋转数组
+     * 给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
+     * 进阶：
+     * 尽可能想出更多的解决方案，至少有三种不同的方法可以解决这个问题。
+     * 你可以使用空间复杂度为 O(1) 的 原地 算法解决这个问题吗？
+     * @date: 2021-09-09
+     */
+    public int[] rotate(int[] nums, int k) {
+        k = k % nums.length;
+        int i = k % nums.length, j = k % nums.length, num = nums[0], count = 0;
+        while (count != nums.length) {
+            int temp = nums[j];
+            nums[j] = num;
+            num = temp;
+            j = (j + k) % nums.length;
+            count++;
+            if (j == i ) {
+                j = (j+1) % nums.length;
+                i = j;
+                num = nums[(i - k + nums.length) % nums.length];
+            }
+        }
+        return nums;
+    }
+    /**
+     * @author: zangch
+     * @describe: LCP 14. 切分数组 G
+     * 给定一个整数数组 nums ，小李想将 nums 切割成若干个非空子数组，使得每个子数组最左边的数和最右边的数的最大公约数大于 1 。为了减少他的工作量，请求出最少可以切成多少个子数组。
+     * @date: 2021-09-10
+     */
+    public int splitArray(int[] nums) {
+        if (nums.length == 0)
+            return 0;
+        int min = splitArray(Arrays.copyOfRange(nums, 1, nums.length)) +1;
+        for (int i = 1 ; i < nums.length ; i++) {
+            if (gcd(nums[0], nums[i]) > 1)
+                min = Math.min(min, splitArray(Arrays.copyOfRange(nums, i+1, nums.length)) +1);
+        }
+        return min;
+    }
+    private int gcd(int a,int b){
+        if(b == 0)
+            return a;
+        return gcd(b,a%b);
+    }
+    /**
+     * @author: zangch
+     * @describe: 峰值元素是指其值严格大于左右相邻值的元素。
+     * 给你一个整数数组 nums，找到峰值元素并返回其索引。数组可能包含多个峰值，在这种情况下，返回 任何一个峰值 所在位置即可。
+     * 你可以假设 nums[-1] = nums[n] = -∞ 。
+     * 你必须实现时间复杂度为 O(log n) 的算法来解决此问题。
+     * @date: 2021-09-15
+     */
+    public int findPeakElement(int[] nums) {
+        int left = 0, right = nums.length -1;
+        while (left <= right) {
+            int middle = (left + right) /2;
+            if ((middle == 0 || nums[middle] > nums[middle-1]) && (middle == nums.length -1 || nums[middle] > nums[middle+1])) {
+                return middle;
+            } else if (middle == 0 || nums[middle] > nums[middle -1]) {
+                left = middle +1;
+            } else {
+                right = middle -1;
+            }
+        }
+        return -1;
+    }
+    /**
+     * @author: zangch
+     * @describe: 567. 字符串的排列
+     * 给你两个字符串 s1 和 s2 ，写一个函数来判断 s2 是否包含 s1 的排列。
+     * 换句话说，s1 的排列之一是 s2 的 子串 。
+     * @date: 2021-09-15
+     */
+    public boolean checkInclusion(String s1, String s2) {
+        return true;
+    }
+    public int majorityElement(int[] nums) {
+        int current = 0, count = 0;
+        for (int num : nums) {
+            if (count == 0) {
+                current = num;
+            }
+            count += (current == num) ? 1 : -1;
+        }
+        return current;
+    }
 }

@@ -2,6 +2,7 @@ package com.github.zangch.leetcode.daily;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -18,5 +19,13 @@ class StreamOperationTest {
     @Test
     void xorQueries() {
         System.out.println(Arrays.toString(streamOperation.xorQueries(new int[]{1,1,2,4}, new int[][]{{1,2}, {0,1}})));
+    }
+    @Test
+    void numberOfBoomerangs() {
+        System.out.println(streamOperation.numberOfBoomerangs(new int[][]{{0,0},{0,1},{1,0},{-1,0},{0,-1}}));
+    }
+    @Test
+    void findLongestWord() {
+        System.out.println(streamOperation.findLongestWord("abc", Arrays.asList("c","b","a")));
     }
 }

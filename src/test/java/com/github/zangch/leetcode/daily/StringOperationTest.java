@@ -12,4 +12,7 @@ class StringOperationTest {
     @Test
     void compareVersion() { System.out.println(stringOperation.compareVersion("1.2.0", "1.1.0.0.0.2"));
     }
+    @Test
+    void minimalSteps() { System.out.println(stringOperation.minimalSteps(new String[]{"S#O", "M..", "M.T"}));
+    }
 }

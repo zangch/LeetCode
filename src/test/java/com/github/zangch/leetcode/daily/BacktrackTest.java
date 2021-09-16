@@ -74,4 +74,8 @@ class BacktrackTest {
     void totalNQueens() {
         System.out.println(backtrack.totalNQueens(9));
     }
+    @Test
+    void findWords() {
+        System.out.println(backtrack.findWords(new char[][]{{'a'}}, new String[]{"a"}));
+    }
 }
