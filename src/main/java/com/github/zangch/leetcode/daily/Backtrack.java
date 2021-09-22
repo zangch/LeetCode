@@ -642,5 +642,31 @@ public class Backtrack {
         }
         return false;
     }
+    /**
+     * @author: zangch
+     * @describe: 784. 字母大小写全排列
+     * 给定一个字符串S，通过将字符串S中的每个字母转变大小写，我们可以获得一个新的字符串。返回所有可能得到的字符串集合。
+     * @date: 2021-09-18
+     */
+    public List<String> letterCasePermutation(String s) {
+        List<String> result = new ArrayList<>();
+        letterCasePermutationBacktrack(0, "", result, s);
+        return result;
+    }
+    private void letterCasePermutationBacktrack(int index, String current, List<String> result, String s) {
+        if (index == s.length()) {
+            result.add(current);
+            return;
+        }
+        if (s.charAt(index) >= 'a' && s.charAt(index) <= 'z') {
+            current += (char)(s.charAt(index) + 'A' - 'a');
+        } else if (s.charAt(index) >= 'A' && s.charAt(index) <= 'Z') {
+            current += (char)(s.charAt(index) - 'A' + 'a');
+        }
+        letterCasePermutationBacktrack(index +1, current, result, s);
+        current = current.substring(0, current.length() -1);
 
+        current += s.charAt(index);
+        letterCasePermutationBacktrack(index +1, current, result, s);
+    }
 }

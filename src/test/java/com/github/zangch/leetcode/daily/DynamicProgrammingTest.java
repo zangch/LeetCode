@@ -28,4 +28,8 @@ class DynamicProgrammingTest {
     void checkRecord() {
         System.out.println(dynamicProgramming.checkRecord(999));
     }
+    @Test
+    void numDecodings() {
+        System.out.println(dynamicProgramming.numDecodings("1"));
+    }
 }

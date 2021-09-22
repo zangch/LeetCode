@@ -78,4 +78,8 @@ class BacktrackTest {
     void findWords() {
         System.out.println(backtrack.findWords(new char[][]{{'a'}}, new String[]{"a"}));
     }
+    @Test
+    void letterCasePermutation() {
+        System.out.println(backtrack.letterCasePermutation("C"));
+    }
 }
