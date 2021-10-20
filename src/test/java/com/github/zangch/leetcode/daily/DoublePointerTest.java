@@ -40,10 +40,6 @@ class DoublePointerTest {
         System.out.println(doublePointer.maxArea(new int[]{1,2,4,6,2,3,4,2}));
     }
     @Test
-    void threeSum(){
-        System.out.println(doublePointer.threeSum(new int[]{1,2,4,6,2,3,4,2}));
-    }
-    @Test
     void rotate(){
         System.out.println(Arrays.toString(doublePointer.rotate(new int[]{1,9}, 3)));
     }
@@ -54,5 +50,37 @@ class DoublePointerTest {
     @Test
     void findPeakElement(){
         System.out.println(doublePointer.findPeakElement(new int[]{1,2}));
+    }
+    @Test
+    void searchRange(){
+        System.out.println(Arrays.toString(doublePointer.searchRange(new int[]{4,4,4,4,4,4}, 5)));
+    }
+    @Test
+    void searchMatrix(){
+        System.out.println(doublePointer.searchMatrix(new int[][]{{1,2,3},{4,5,6}}, 3));
+    }
+    @Test
+    void findMin(){
+        System.out.println(doublePointer.findMin(new int[]{4,5,6,7,1,2,3}));
+    }
+    @Test
+    void threeSum(){
+        System.out.println(doublePointer.threeSum(new int[]{-1,-2,0,4,6,2,3,4,2}));
+    }
+    @Test
+    void nthUglyNumber(){
+        System.out.println(doublePointer.nthUglyNumber(7));
+    }
+    @Test
+    void numDecodings(){
+        System.out.println(doublePointer.numDecodings("1**"));
+    }
+    @Test
+    void numSquares(){
+        System.out.println(doublePointer.numSquares(10000));
+    }
+    @Test
+    void maxSumDivThree(){
+        System.out.println(doublePointer.maxSumDivThree(new int[]{1,4}));
     }
 }

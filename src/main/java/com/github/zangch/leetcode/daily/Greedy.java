@@ -188,4 +188,30 @@ public class Greedy {
         List<String> result = new ArrayList<>();
         return result;
     }
+    /**
+     * @author: zangch
+     * @describe: 517. 超级洗衣机
+     * 假设有 n 台超级洗衣机放在同一排上。开始的时候，每台洗衣机内可能有一定量的衣服，也可能是空的。
+     * 在每一步操作中，你可以选择任意 m (1 <= m <= n) 台洗衣机，与此同时将每台洗衣机的一件衣服送到相邻的一台洗衣机。
+     * 给定一个整数数组 machines 代表从左至右每台洗衣机中的衣物数量，请给出能让所有洗衣机中剩下的衣物的数量相等的 最少的操作步数 。如果不能使每台洗衣机中衣物的数量相等，则返回 -1 。
+     * @date: 2021-09-29
+     */
+    public int findMinMoves(int[] machines) {
+        int avg = Arrays.stream(machines).sum();
+        if (avg % machines.length == 0) {
+            avg = avg / machines.length;
+        } else {
+            return -1;
+        }
+        int[] move = new int[machines.length];
+        move[0] = machines[0] - avg;
+        int max = Math.abs(move[0]);
+        for (int i = 1 ; i < machines.length ; i++) {
+            if (machines[i] - avg > 0)
+                max = Math.max(max, Math.abs(machines[i] - avg));
+            move[i] = move[i - 1] + machines[i] - avg;
+            max = Math.max(max, Math.abs(move[i]));
+        }
+        return max;
+    }
 }

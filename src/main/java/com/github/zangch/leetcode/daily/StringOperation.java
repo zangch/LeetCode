@@ -118,5 +118,40 @@ public class StringOperation {
         }
         return path;
     }
-
+    /**
+     * @author: zangch
+     * @describe: 187. 重复的DNA序列
+     * 所有 DNA 都由一系列缩写为 'A'，'C'，'G' 和 'T' 的核苷酸组成，例如："ACGAATTCCG"。在研究 DNA 时，识别 DNA 中的重复序列有时会对研究非常有帮助。
+     * 编写一个函数来找出所有目标子串，目标子串的长度为 10，且在 DNA 字符串 s 中出现次数超过一次。
+     * @date: 2021-10-08
+     */
+    public List<String> findRepeatedDnaSequences(String s) {
+        if (s.length() < 11) {
+            return new ArrayList<>();
+        }
+        List<String> result = new ArrayList<>();
+        Map<String, Integer> current = new HashMap<>();
+        for (int i = 0 ; i < s.length() - 10 ; i++) {
+            String DNA = s.substring(i, i + 10);
+            current.put(DNA, current.getOrDefault(DNA, 0) + 1);
+            if (current.get(DNA) == 2) {
+                result.add(DNA);
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 352. 将数据流变为多个不相交区间
+     *  给你一个由非负整数 a1, a2, ..., an 组成的数据流输入，请你将到目前为止看到的数字总结为不相交的区间列表。
+     * 实现 SummaryRanges 类：
+     * SummaryRanges() 使用一个空数据流初始化对象。
+     * void addNum(int val) 向数据流中加入整数 val 。
+     * int[][] getIntervals() 以不相交区间 [starti, endi] 的列表形式返回对数据流中整数的总结。
+     * @date: 2021-10-09
+     */
+    public void addNum(int val) {
+        int[][] intervals = new int[2][2];
+        int index = Arrays.binarySearch(intervals, val);
+    }
 }

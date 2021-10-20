@@ -2,6 +2,8 @@ package com.github.zangch.leetcode.daily;
 
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
+
 /**
  * @author: zangch
  * @describe:
@@ -31,5 +33,21 @@ class DynamicProgrammingTest {
     @Test
     void numDecodings() {
         System.out.println(dynamicProgramming.numDecodings("1"));
+    }
+    @Test
+    void minSteps() {
+        System.out.println(dynamicProgramming.minSteps(1000));
+    }
+    @Test
+    void maxProduct() {
+        System.out.println(dynamicProgramming.maxProduct(new int[]{-3,3,2,0,5}));
+    }
+    @Test
+    void minimumTotal() {
+        System.out.println(dynamicProgramming.minimumTotal(new ArrayList<>(1)));
+    }
+    @Test
+    void minDistance() {
+        System.out.println(dynamicProgramming.minDistance("horse", "ros"));
     }
 }

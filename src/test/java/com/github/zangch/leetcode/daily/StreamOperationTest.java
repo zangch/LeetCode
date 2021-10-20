@@ -28,4 +28,16 @@ class StreamOperationTest {
     void findLongestWord() {
         System.out.println(streamOperation.findLongestWord("abc", Arrays.asList("c","b","a")));
     }
+    @Test
+    void firstMissingPositive() {
+        System.out.println(streamOperation.firstMissingPositive(new int[]{-1,1,4}));
+    }
+    @Test
+    void divide() {
+        System.out.println(streamOperation.divide(2, -3));
+    }
+    @Test
+    void countAndSay() {
+        System.out.println(streamOperation.countAndSay(8));
+    }
 }

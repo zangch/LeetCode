@@ -10,9 +10,15 @@ import org.junit.jupiter.api.Test;
 class StringOperationTest {
     private final StringOperation stringOperation = new StringOperation();
     @Test
-    void compareVersion() { System.out.println(stringOperation.compareVersion("1.2.0", "1.1.0.0.0.2"));
+    void compareVersion() {
+        System.out.println(stringOperation.compareVersion("1.2.0", "1.1.0.0.0.2"));
     }
     @Test
-    void minimalSteps() { System.out.println(stringOperation.minimalSteps(new String[]{"S#O", "M..", "M.T"}));
+    void minimalSteps() {
+        System.out.println(stringOperation.minimalSteps(new String[]{"S#O", "M..", "M.T"}));
+    }
+    @Test
+    void findRepeatedDnaSequences() {
+        System.out.println(stringOperation.findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
     }
 }

@@ -173,31 +173,6 @@ public class DoublePointer {
     }
     /**
      * @author: zangch
-     * @describe: 15. 三数之和 🥦
-     * 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
-     * 注意：答案中不可以包含重复的三元组。
-     * @date: 2021-09-06
-     */
-    public List<List<Integer>> threeSum(int[] nums) {
-        List<List<Integer>> result = new ArrayList<>();
-        Map<Integer, List<List<Integer>>> sum = new HashMap<>();
-        for (int i = 0 ; i < nums.length ; i++) {
-            for (int j = i+1 ; j < nums.length ; j++) {
-                if (sum.containsKey(-nums[j])) {
-                    for (List<Integer> temp : sum.get(-nums[j])){
-                        temp.add(nums[j]);
-                        result.add(temp);
-                    }
-                }
-                List<List<Integer>> temp = sum.getOrDefault(nums[i] + nums[j], new ArrayList<>());
-                temp.add(Arrays.asList(nums[i], nums[j]));
-                sum.putIfAbsent(nums[i] + nums[j],temp);
-            }
-        }
-        return result;
-    }
-    /**
-     * @author: zangch
      * @describe: 189. 旋转数组
      * 给定一个数组，将数组中的元素向右移动 k 个位置，其中 k 是非负数。
      * 进阶：
@@ -267,22 +242,245 @@ public class DoublePointer {
     }
     /**
      * @author: zangch
-     * @describe: 567. 字符串的排列
-     * 给你两个字符串 s1 和 s2 ，写一个函数来判断 s2 是否包含 s1 的排列。
-     * 换句话说，s1 的排列之一是 s2 的 子串 。
-     * @date: 2021-09-15
+     * @describe: 34. 在排序数组中查找元素的第一个和最后一个位置
+     * 给定一个按照升序排列的整数数组 nums，和一个目标值 target。找出给定目标值在数组中的开始位置和结束位置。
+     * 如果数组中不存在目标值 target，返回 [-1, -1]。
+     * 进阶：
+     * 你可以设计并实现时间复杂度为 O(log n) 的算法解决此问题吗？
+     * @date: 2021-09-22
      */
-    public boolean checkInclusion(String s1, String s2) {
-        return true;
-    }
-    public int majorityElement(int[] nums) {
-        int current = 0, count = 0;
-        for (int num : nums) {
-            if (count == 0) {
-                current = num;
+    public int[] searchRange(int[] nums, int target) {
+        int left = 0, right = nums.length - 1;
+        int[] result = new int[]{-1, -1};
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if (nums[middle] == target && (middle == 0 || nums[middle - 1] < target)) {
+                result[0] = middle;
+                break;
+            } else if (nums[middle] >= target) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
             }
-            count += (current == num) ? 1 : -1;
         }
-        return current;
+        if (result[0] == -1)
+            return result;
+        left = 0;
+        right = nums.length - 1;
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if (nums[middle] == target && (middle == nums.length -1 || nums[middle + 1] > target)) {
+                result[1] = middle;
+                break;
+            } else if (nums[middle] > target) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 74. 搜索二维矩阵
+     * 编写一个高效的算法来判断 m x n 矩阵中，是否存在一个目标值。该矩阵具有如下特性：
+     * 每行中的整数从左到右按升序排列。
+     * 每行的第一个整数大于前一行的最后一个整数。
+     * @date: 2021-09-22
+     */
+    public boolean searchMatrix(int[][] matrix, int target) {
+        if (target < matrix[0][0] || target > matrix[matrix.length - 1][matrix[0].length - 1]) {
+            return false;
+        }
+        int left = 0, right = matrix.length - 1, current = -1;
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if (matrix[middle][0] == target)
+                return true;
+            if (matrix[middle][0] < target && (middle == matrix.length - 1 || matrix[middle + 1][0] > target)) {
+                current = middle;
+                break;
+            } else if (matrix[middle][0] > target) {
+                right = middle - 1;
+            } else {
+                left = middle + 1;
+            }
+        }
+        left = 0;
+        right = matrix[current].length - 1;
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if (matrix[current][middle] == target) {
+                return true;
+            } else if (matrix[current][middle] > target) {
+                right = middle - 1;
+            }else {
+                left = middle + 1;
+            }
+        }
+        return false;
+    }
+    /**
+     * @author: zangch
+     * @describe: 153. 寻找旋转排序数组中的最小值
+     * 已知一个长度为 n 的数组，预先按照升序排列，经由 1 到 n 次 旋转 后，得到输入数组。例如，原数组 nums = [0,1,2,4,5,6,7] 在变化后可能得到：
+     * 若旋转 4 次，则可以得到 [4,5,6,7,0,1,2]
+     * 若旋转 7 次，则可以得到 [0,1,2,4,5,6,7]
+     * 注意，数组 [a[0], a[1], a[2], ..., a[n-1]] 旋转一次 的结果为数组 [a[n-1], a[0], a[1], a[2], ..., a[n-2]] 。
+     * 给你一个元素值 互不相同 的数组 nums ，它原来是一个升序排列的数组，并按上述情形进行了多次旋转。请你找出并返回数组中的 最小元素 。
+     * @date: 2021-09-23
+     */
+    public int findMin(int[] nums) {
+        int left = 0, right = nums.length - 1, min = Integer.MAX_VALUE;
+        while (left <= right) {
+            int middle = (left + right) / 2;
+            if (nums[middle] >= nums[left]) {
+                min = Math.min(min, nums[left]);
+                left = middle + 1;
+            } else {
+                min = Math.min(min, nums[middle + 1]);
+                right = middle;
+            }
+        }
+        return min;
+    }
+    /**
+     * @author: zangch
+     * @describe: 15. 三数之和 🥦
+     * 给你一个包含 n 个整数的数组 nums，判断 nums 中是否存在三个元素 a，b，c ，使得 a + b + c = 0 ？请你找出所有和为 0 且不重复的三元组。
+     * 注意：答案中不可以包含重复的三元组。
+     * @date: 2021-09-24
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new ArrayList<>();
+        for (int i = 0 ; i < nums.length ; i++) {
+            for (int j = i + 1 ; j < nums.length ; j++) {
+                for (int k = j + 1 ; k < nums.length ; k++) {
+                    if (nums[i] + nums[j] + nums[k] == 0) {
+                        result.add(Arrays.asList(nums[i], nums[j], nums[k]));
+                    }
+                }
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 264. 丑数 II
+     * 给你一个整数 n ，请你找出并返回第 n 个 丑数 。
+     * 丑数 就是只包含质因数 2、3 和/或 5 的正整数。
+     * @date: 2021-09-26
+     */
+    public int nthUglyNumber(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        int i2 = 1, i3 = 1, i5 = 1;
+        for (int i = 2 ; i <= n ; i++) {
+            dp[i] = Math.min(dp[i2] * 2, Math.min(dp[i3] * 3, dp[i5] * 5));
+            if (dp[i] == dp[i2] * 2) i2++;
+            if (dp[i] == dp[i3] * 3) i3++;
+            if (dp[i] == dp[i5] * 5) i5++;
+        }
+        return dp[n];
+    }
+    /**
+     * @author: zangch
+     * @describe: 313. 超级丑数 🥦
+     * 超级丑数 是一个正整数，并满足其所有质因数都出现在质数数组 primes 中。
+     * 给你一个整数 n 和一个整数数组 primes ，返回第 n 个 超级丑数 。
+     * 题目数据保证第 n 个 超级丑数 在 32-bit 带符号整数范围内。
+     * @date: 2021-09-26
+     */
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        return 0;
+    }
+    /**
+     * @author: zangch
+     * @describe: 639. 解码方法 II
+     * 一条包含字母 A-Z 的消息通过以下的方式进行了编码：
+     * 'A' -> 1
+     * 'B' -> 2
+     * ...
+     * 'Z' -> 26
+     * 要 解码 一条已编码的消息，所有的数字都必须分组，然后按原来的编码方案反向映射回字母（可能存在多种方式）。例如，"11106" 可以映射为：
+     * "AAJF" 对应分组 (1 1 10 6)
+     * "KJF" 对应分组 (11 10 6)
+     * 注意，像 (1 11 06) 这样的分组是无效的，因为 "06" 不可以映射为 'F' ，因为 "6" 与 "06" 不同。
+     * 除了 上面描述的数字字母映射方案，编码消息中可能包含 '*' 字符，可以表示从 '1' 到 '9' 的任一数字（不包括 '0'）。例如，编码字符串 "1*" 可以表示 "11"、"12"、"13"、"14"、"15"、"16"、"17"、"18" 或 "19" 中的任意一条消息。对 "1*" 进行解码，相当于解码该字符串可以表示的任何编码消息。
+     * 给你一个字符串 s ，由数字和 '*' 字符组成，返回 解码 该字符串的方法 数目 。
+     * 由于答案数目可能非常大，返回对 109 + 7 取余 的结果。
+     * @date: 2021-09-27
+     */
+    public int numDecodings(String s) {
+        if (s.charAt(0) == '0') {
+            return 0;
+        }
+        int[] dp = new int[s.length() + 1];
+        dp[0] = 1;
+        dp[1] = (s.charAt(0) == '*' ? 9 : 1);
+        for (int i = 1 ; i < s.length() ; i++) {
+            long count = 0;
+            if (s.charAt(i) != '0')
+                count += (s.charAt(i) == '*') ? 9L * dp[i] : dp[i];
+            if (s.charAt(i - 1) == '1')
+                count += (s.charAt(i) == '*') ? 9L * dp[i - 1] : dp[i - 1];
+            if (s.charAt(i - 1) == '2' && (s.charAt(i) - '0' < 7 || s.charAt(i) == '*'))
+                count += (s.charAt(i) == '*') ? 6L * dp[i - 1] : dp[i - 1];
+            if (s.charAt(i - 1) == '*'){
+                if (s.charAt(i) == '*') {
+                    count += 15L * dp[i - 1];
+                } else if (s.charAt(i) - '0' < 7) {
+                    count += 2L * dp[i - 1];
+                } else {
+                    count += dp[i - 1];
+                }
+            }
+            if (count == 0)
+                return 0;
+            dp[i + 1] = (int)(count % 1000000007);
+        }
+        return dp[s.length()];
+    }
+    /**
+     * @author: zangch
+     * @describe: 279. 完全平方数
+     * 给定正整数 n，找到若干个完全平方数（比如 1, 4, 9, 16, ...）使得它们的和等于 n。你需要让组成和的完全平方数的个数最少。
+     * 给你一个整数 n ，返回和为 n 的完全平方数的 最少数量 。
+     * 完全平方数 是一个整数，其值等于另一个整数的平方；换句话说，其值等于一个整数自乘的积。例如，1、4、9 和 16 都是完全平方数，而 3 和 11 不是。
+     * @date: 2021-09-28
+     */
+    public int numSquares(int n) {
+        int[] dp = new int[n + 1];
+        dp[1] = 1;
+        for (int i = 2 ; i <= n ; i++) {
+            if (Math.sqrt(i) % 1 == 0) {
+                dp[i] = 1;
+                continue;
+            }
+            int min = Integer.MAX_VALUE, current = i;
+            while (--current >= i / 2) {
+                min = Math.min(min, dp[current] + dp[i - current]);
+            }
+            dp[i] = min;
+        }
+        return dp[n];
+    }
+    /**
+     * @author: zangch
+     * @describe: 42. 接雨水
+     * 给定 n 个非负整数表示每个宽度为 1 的柱子的高度图，计算按此排列的柱子，下雨之后能接多少雨水。
+     * @date: 2021-09-28
+     */
+    public int trap(int[] height) {
+        return 0;
+    }
+    /**
+     * @author: zangch
+     * @describe: 1262. 可被三整除的最大和
+     * 给你一个整数数组 nums，请你找出并返回能被三整除的元素最大和。
+     * @date: 2021-09-28
+     */
+    public int maxSumDivThree(int[] nums) {
+        return 0;
     }
 }

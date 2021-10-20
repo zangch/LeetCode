@@ -1,5 +1,6 @@
 package com.github.zangch.leetcode.daily;
 
+import java.math.BigDecimal;
 import java.util.*;
 
 /**
@@ -77,5 +78,68 @@ public class StreamOperation {
             }
         }
         return longest;
+    }
+    /**
+     * @author: zangch
+     * @describe: 41. 缺失的第一个正数
+     * 给你一个未排序的整数数组 nums ，请你找出其中没有出现的最小的正整数。
+     * 请你实现时间复杂度为 O(n) 并且只使用常数级别额外空间的解决方案。
+     * @date: 2021-09-29
+     */
+    public int firstMissingPositive(int[] nums) {
+        int miss = 1;
+        Set<Integer> numSet = new HashSet<>();
+        numSet.add(1);
+        for (int num : nums) {
+            if (num == miss) {
+                while (!numSet.add(miss)) {
+                    miss++;
+                }
+            } else if (num > 0) {
+                numSet.add(num);
+            }
+        }
+        return miss;
+    }
+    /**
+     * @author: zangch
+     * @describe: 29. 两数相除
+     * 给定两个整数，被除数 dividend 和除数 divisor。将两数相除，要求不使用乘法、除法和 mod 运算符。
+     * 返回被除数 dividend 除以除数 divisor 得到的商。
+     * 整数除法的结果应当截去（truncate）其小数部分，例如：truncate(8.345) = 8 以及 truncate(-2.7335) = -2
+     * @date: 2021-10-12
+     */
+    public int divide(int dividend, int divisor) {
+        return dividend / divisor;
+    }
+    /**
+     * @author: zangch
+     * @describe: 38. 外观数列
+     * 给定一个正整数 n ，输出外观数列的第 n 项。
+     * 「外观数列」是一个整数序列，从数字 1 开始，序列中的每一项都是对前一项的描述。
+     * 你可以将其视作是由递归公式定义的数字字符串序列：
+     * countAndSay(1) = "1"
+     * countAndSay(n) 是对 countAndSay(n-1) 的描述，然后转换成另一个数字字符串。
+     * @date: 2021-10-15
+     */
+    public String countAndSay(int n) {
+        String result = "1";
+        while (--n > 0) {
+            int count = 1;
+            char c = result.charAt(0);
+            StringBuilder next = new StringBuilder();
+            for (int i = 1 ; i < result.length() ; i++) {
+                if (result.charAt(i) == c) {
+                    count++;
+                } else {
+                    next.append(count).append(c);
+                    count = 1;
+                    c = result.charAt(i);
+                }
+            }
+            next.append(count).append(c);
+            result = next.toString();
+        }
+        return result;
     }
 }

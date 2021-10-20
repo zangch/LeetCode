@@ -46,4 +46,8 @@ class GreedyTest {
     void fullJustify() {
         System.out.println(greedy.fullJustify(new String[]{"hello", "world", "I", "am", "Iron", "man"}, 9));
     }
+    @Test
+    void findMinMoves() {
+        System.out.println(greedy.findMinMoves(new int[]{44,46,11,2,12,64,40,60,92,9}));
+    }
 }
