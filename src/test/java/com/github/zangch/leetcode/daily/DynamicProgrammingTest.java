@@ -50,4 +50,20 @@ class DynamicProgrammingTest {
     void minDistance() {
         System.out.println(dynamicProgramming.minDistance("horse", "ros"));
     }
+    @Test
+    void longestPalindrome() {
+        System.out.println(dynamicProgramming.longestPalindrome("cc"));
+    }
+    @Test
+    void rob() {
+        System.out.println(dynamicProgramming.rob(new int[]{1,2,3,5,2,1,3}));
+    }
+    @Test
+    void robII() {
+        System.out.println(dynamicProgramming.robII(new int[]{1,2,3,5,2,1,3}));
+    }
+    @Test
+    void integerBreak() {
+        System.out.println(dynamicProgramming.integerBreak(13));
+    }
 }

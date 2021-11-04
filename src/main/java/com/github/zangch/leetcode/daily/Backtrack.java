@@ -1,8 +1,6 @@
 package com.github.zangch.leetcode.daily;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -668,5 +666,36 @@ public class Backtrack {
 
         current += s.charAt(index);
         letterCasePermutationBacktrack(index +1, current, result, s);
+    }
+    /**
+     * @author: zangch
+     * @describe: 869. 重新排序得到 2 的幂
+     * 给定正整数 N ，我们按任何顺序（包括原始顺序）将数字重新排序，注意其前导数字不能为零。
+     * 如果我们可以通过上述方式得到 2 的幂，返回 true；否则，返回 false。
+     * @date: 2021-10-28
+     */
+    public boolean reorderedPowerOf2(int n) {
+        return reorderedPowerOf2Backtrack(0, String.valueOf(n).toCharArray());
+    }
+    private boolean reorderedPowerOf2Backtrack(int current, char[] nums) {
+        boolean result = false;
+        if (current == nums.length) {
+            if (nums[0] != '0') {
+                int num = Integer.parseInt(String.valueOf(nums));
+                return  (num & (num - 1)) == 0;
+            }
+        }
+        for (int i = current ; i < nums.length ; i++) {
+            char n = nums[i];
+            nums[i] = nums[current];
+            nums[current] = n;
+
+            result = result | reorderedPowerOf2Backtrack(current + 1, nums);
+
+            n = nums[i];
+            nums[i] = nums[current];
+            nums[current] = n;
+        }
+        return result;
     }
 }

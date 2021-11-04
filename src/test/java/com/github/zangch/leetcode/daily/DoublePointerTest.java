@@ -83,4 +83,8 @@ class DoublePointerTest {
     void maxSumDivThree(){
         System.out.println(doublePointer.maxSumDivThree(new int[]{1,4}));
     }
+    @Test
+    void trap(){
+        System.out.println(doublePointer.trap(new int[]{4,2,3}));
+    }
 }

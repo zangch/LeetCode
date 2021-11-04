@@ -226,7 +226,16 @@ public class DynamicProgramming {
      * @date: 2021-09-24
      */
     public int rob(int[] nums) {
-        return 0;
+        if (nums.length < 2) {
+            return nums[0];
+        }
+        int[] dp = new int[nums.length];
+        dp[0] = nums[0];
+        dp[1] = Math.max(nums[0] , nums[1]);
+        for (int i = 2 ; i < nums.length ; i++) {
+            dp[i] = Math.max(dp[i - 1], dp[i - 2] + nums[i]);
+        }
+        return dp[nums.length - 1];
     }
     /**
      * @author: zangch
@@ -270,6 +279,47 @@ public class DynamicProgramming {
             }
         }
         return dp[word1.length()][word2.length()];
+    }
+    /**
+     * @author: zangch
+     * @describe: 5. 最长回文子串
+     * 给你一个字符串 s，找到 s 中最长的回文子串。
+     * @date: 2021-10-20
+     */
+    public String longestPalindrome(String s) {
+        return "";
+    }
+    /**
+     * @author: zangch
+     * @describe: 213. 打家劫舍 II
+     * 你是一个专业的小偷，计划偷窃沿街的房屋，每间房内都藏有一定的现金。这个地方所有的房屋都 围成一圈 ，这意味着第一个房屋和最后一个房屋是紧挨着的。同时，相邻的房屋装有相互连通的防盗系统，如果两间相邻的房屋在同一晚上被小偷闯入，系统会自动报警 。
+     * 给定一个代表每个房屋存放金额的非负整数数组，计算你 在不触动警报装置的情况下 ，今晚能够偷窃到的最高金额。
+     * @date: 2021-10-21
+     */
+    public int robII(int[] nums) {
+        if (nums.length == 1) {
+            return nums[0];
+        }
+        return Math.max(rob(Arrays.copyOf(nums, nums.length - 1)), rob(Arrays.copyOfRange(nums, 1, nums.length)));
+    }
+    /**
+     * @author: zangch
+     * @describe: 343. 整数拆分
+     * 给定一个正整数 n，将其拆分为至少两个正整数的和，并使这些整数的乘积最大化。 返回你可以获得的最大乘积。
+     * @date: 2021-11-01
+     */
+    public int integerBreak(int n) {
+        if (n < 3) {
+            return n - 1;
+        }
+        int a = n / 3;
+        if (n % 3 == 0) {
+            return (int)Math.pow(3 ,a);
+        } else if (n % 3 == 1) {
+            return (int)Math.pow(3 ,a - 1) * 4;
+        } else {
+            return (int)Math.pow(3 , a) * 2;
+        }
     }
 
 }

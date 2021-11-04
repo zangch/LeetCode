@@ -40,4 +40,12 @@ class StreamOperationTest {
     void countAndSay() {
         System.out.println(streamOperation.countAndSay(8));
     }
+    @Test
+    void nextGreaterElement() {
+        System.out.println(Arrays.toString(streamOperation.nextGreaterElement(new int[]{8,4,1,5,9}, new int[]{8,6,4,2,1,3,5,7,9})));
+    }
+    @Test
+    void find132pattern() {
+        System.out.println(streamOperation.find132pattern(new int[]{1,2,4,3}));
+    }
 }

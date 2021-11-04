@@ -289,33 +289,14 @@ public class DoublePointer {
      * @date: 2021-09-22
      */
     public boolean searchMatrix(int[][] matrix, int target) {
-        if (target < matrix[0][0] || target > matrix[matrix.length - 1][matrix[0].length - 1]) {
-            return false;
-        }
-        int left = 0, right = matrix.length - 1, current = -1;
-        while (left <= right) {
-            int middle = (left + right) / 2;
-            if (matrix[middle][0] == target)
+        int left = matrix[0].length - 1, down = 0;
+        while (left >= 0 && down < matrix.length) {
+            if (matrix[left][down] == target) {
                 return true;
-            if (matrix[middle][0] < target && (middle == matrix.length - 1 || matrix[middle + 1][0] > target)) {
-                current = middle;
-                break;
-            } else if (matrix[middle][0] > target) {
-                right = middle - 1;
+            } else if (matrix[left][down] < target) {
+                down++;
             } else {
-                left = middle + 1;
-            }
-        }
-        left = 0;
-        right = matrix[current].length - 1;
-        while (left <= right) {
-            int middle = (left + right) / 2;
-            if (matrix[current][middle] == target) {
-                return true;
-            } else if (matrix[current][middle] > target) {
-                right = middle - 1;
-            }else {
-                left = middle + 1;
+                left--;
             }
         }
         return false;
@@ -472,7 +453,19 @@ public class DoublePointer {
      * @date: 2021-09-28
      */
     public int trap(int[] height) {
-        return 0;
+        int l = height.length, result = 0;
+        Stack<Integer> monotonousStack = new Stack<>();
+        monotonousStack.add(l - 1);
+        for (int i = l - 2 ; i >= 0 ; i--) {
+            while (!monotonousStack.empty() && height[i] >= height[monotonousStack.peek()]) {
+                int current = monotonousStack.pop();
+                if (monotonousStack.empty() || height[current] == height[i]) break;
+                int higher = monotonousStack.peek();
+                result += (higher - i - 1) * (Math.min(height[higher], height[i])- height[current]);
+            }
+            monotonousStack.add(i);
+        }
+        return result;
     }
     /**
      * @author: zangch
@@ -481,6 +474,15 @@ public class DoublePointer {
      * @date: 2021-09-28
      */
     public int maxSumDivThree(int[] nums) {
+        return 0;
+    }
+    /**
+     * @author: zangch
+     * @describe: 407. 接雨水 II
+     * 给你一个 m x n 的矩阵，其中的值均为非负整数，代表二维高度图每个单元的高度，请计算图中形状最多能接多少体积的雨水。
+     * @date: 2021-11-04
+     */
+    public int trapRainWater(int[][] heightMap) {
         return 0;
     }
 }

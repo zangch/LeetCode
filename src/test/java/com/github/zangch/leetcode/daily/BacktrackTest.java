@@ -82,4 +82,8 @@ class BacktrackTest {
     void letterCasePermutation() {
         System.out.println(backtrack.letterCasePermutation("C"));
     }
+    @Test
+    void reorderedPowerOf2() {
+        System.out.println(backtrack.reorderedPowerOf2(1240));
+    }
 }

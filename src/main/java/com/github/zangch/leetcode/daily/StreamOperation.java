@@ -142,4 +142,66 @@ public class StreamOperation {
         }
         return result;
     }
+    /**
+     * @author: zangch
+     * @describe: 229. 求众数 II
+     * 给定一个大小为 n 的整数数组，找出其中所有出现超过 ⌊ n/3 ⌋ 次的元素。
+     * @date: 2021-10-22
+     */
+    public List<Integer> majorityElement(int[] nums) {
+        if (nums.length == 1) {
+            return Collections.singletonList(nums[0]);
+        } else if (nums.length == 2) {
+            return Arrays.asList(nums[0], nums[1]);
+        }
+        return new ArrayList<>();
+    }
+    /**
+     * @author: zangch
+     * @describe: 496. 下一个更大元素 I
+     * 给你两个 没有重复元素 的数组 nums1 和 nums2 ，其中nums1 是 nums2 的子集。
+     * 请你找出 nums1 中每个元素在 nums2 中的下一个比其大的值。
+     * nums1 中数字 x 的下一个更大元素是指 x 在 nums2 中对应位置的右边的第一个比 x 大的元素。如果不存在，对应位置输出 -1 。
+     * @date: 2021-10-26
+     */
+    public int[] nextGreaterElement(int[] nums1, int[] nums2) {
+        Stack<Integer> current = new Stack<>();
+        Map<Integer, Integer> nextGreater = new HashMap<>();
+        for (int i = nums2.length - 1 ; i >= 0 ; i--) {
+            while (!current.isEmpty() && current.peek() < nums2[i]) {
+                current.pop();
+            }
+            nextGreater.put(nums2[i], current.isEmpty() ? -1 : current.peek());
+            current.push(nums2[i]);
+        }
+        return Arrays.stream(nums1).map(nextGreater::get).toArray();
+    }
+    /**
+     * @author: zangch
+     * @describe: 456. 132 模式
+     * 给你一个整数数组 nums ，数组中共有 n 个整数。132 模式的子序列 由三个整数 nums[i]、nums[j] 和 nums[k] 组成，并同时满足：i < j < k 和 nums[i] < nums[k] < nums[j] 。
+     * 如果 nums 中存在 132 模式的子序列 ，返回 true ；否则，返回 false 。
+     * @date: 2021-10-26
+     */
+    public boolean find132pattern(int[] nums) {
+        int[] greater = new int[nums.length], less = new int[nums.length];
+        Stack<Integer> monotonousStack = new Stack<>();
+        for (int i = 1 ; i < nums.length - 1 ; i++) {
+            while (!monotonousStack.empty() && nums[i] < monotonousStack.peek()) {
+                monotonousStack.pop();
+            }
+            less[i] = monotonousStack.empty() ? nums[i] : monotonousStack.peek();
+            monotonousStack.push(nums[i]);
+        }
+        monotonousStack.clear();
+        for (int i = nums.length - 2 ; i > 0 ; i--) {
+            while (!monotonousStack.empty() && nums[i] > monotonousStack.peek()) {
+                monotonousStack.pop();
+            }
+            greater[i] = monotonousStack.empty() ? nums[i] : monotonousStack.peek();
+            monotonousStack.push(nums[i]);
+        }
+
+        return false;
+    }
 }
