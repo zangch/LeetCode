@@ -2,7 +2,6 @@ package com.github.zangch.leetcode.daily;
 
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -47,5 +46,13 @@ class StreamOperationTest {
     @Test
     void find132pattern() {
         System.out.println(streamOperation.find132pattern(new int[]{1,2,4,3}));
+    }
+    @Test
+    void poorPigs() {
+        System.out.println(streamOperation.poorPigs(4, 15, 30));
+    }
+    @Test
+    void findNthDigit() {
+        System.out.println(streamOperation.findNthDigit(13));
     }
 }

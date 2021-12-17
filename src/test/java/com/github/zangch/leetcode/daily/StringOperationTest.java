@@ -21,4 +21,16 @@ class StringOperationTest {
     void findRepeatedDnaSequences() {
         System.out.println(stringOperation.findRepeatedDnaSequences("AAAAACCCCCAAAAACCCCCCAAAAAGGGTTT"));
     }
+    @Test
+    void getHint() {
+        System.out.println(stringOperation.getHint("111111", "111221"));
+    }
+    @Test
+    void longestPrefix() {
+        System.out.println(stringOperation.longestPrefix("abababababab"));
+    }
+    @Test
+    void maxProduct() {
+        System.out.println(stringOperation.maxProduct(new String[]{"aaaa", "bb", "aab"}));
+    }
 }

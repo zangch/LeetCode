@@ -321,5 +321,50 @@ public class DynamicProgramming {
             return (int)Math.pow(3 , a) * 2;
         }
     }
-
+    /**
+     * @author: zangch
+     * @describe: 313. 超级丑数 🥦
+     * 超级丑数 是一个正整数，并满足其所有质因数都出现在质数数组 primes 中。
+     * 给你一个整数 n 和一个整数数组 primes ，返回第 n 个 超级丑数 。
+     * 题目数据保证第 n 个 超级丑数 在 32-bit 带符号整数范围内。
+     * @date: 2021-09-26
+     */
+    public int nthSuperUglyNumber(int n, int[] primes) {
+        int[] dp = new int[n + 1];
+        Map<Integer, Integer> primesMap = new HashMap<>();
+        Arrays.stream(primes).forEach(p -> primesMap.put(p, 1));
+        dp[1] = 1;
+        for (int i = 2 ; i <= n ; i++) {
+            int min = Integer.MAX_VALUE;
+            for (Map.Entry<Integer, Integer> e : primesMap.entrySet()) {
+                min = Math.min(min, e.getKey() * dp[e.getValue()]);
+            }
+            for (Map.Entry<Integer, Integer> e : primesMap.entrySet()) {
+                if (min == e.getKey() * dp[e.getValue()]) {
+                    primesMap.replace(e.getKey(), e.getValue() + 1);
+                }
+            }
+            dp[i] = min;
+        }
+        return dp[n];
+    }
+    /**
+     * @author: zangch
+     * @describe: 397. 整数替换
+     * 给定一个正整数 n ，你可以做如下操作：
+     *
+     * 如果 n 是偶数，则用 n / 2替换 n 。
+     * 如果 n 是奇数，则可以用 n + 1或n - 1替换 n 。
+     * n 变为 1 所需的最小替换次数是多少？
+     * @date: 2021-11-19
+     */
+    public int integerReplacement(int n) {
+        if (n % 2 == 0) {
+            return integerReplacement(n / 2) + 1;
+        } else {
+            if (n == 1) return 0;
+            if (n == Integer.MAX_VALUE) return 32;
+            return Math.min(integerReplacement(n + 1), integerReplacement(n - 1)) + 1;
+        }
+    }
 }

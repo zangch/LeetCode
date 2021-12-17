@@ -151,7 +151,154 @@ public class StringOperation {
      * @date: 2021-10-09
      */
     public void addNum(int val) {
-        int[][] intervals = new int[2][2];
-        int index = Arrays.binarySearch(intervals, val);
     }
+    /**
+     * @author: zangch
+     * @describe: 299. 猜数字游戏
+     * 你在和朋友一起玩 猜数字（Bulls and Cows）游戏，该游戏规则如下：
+     *
+     * 写出一个秘密数字，并请朋友猜这个数字是多少。朋友每猜测一次，你就会给他一个包含下述信息的提示：
+     *
+     * 猜测数字中有多少位属于数字和确切位置都猜对了（称为 "Bulls", 公牛），
+     * 有多少位属于数字猜对了但是位置不对（称为 "Cows", 奶牛）。也就是说，这次猜测中有多少位非公牛数字可以通过重新排列转换成公牛数字。
+     * 给你一个秘密数字 secret 和朋友猜测的数字 guess ，请你返回对朋友这次猜测的提示。
+     *
+     * 提示的格式为 "xAyB" ，x 是公牛个数， y 是奶牛个数，A 表示公牛，B 表示奶牛。
+     *
+     * 请注意秘密数字和朋友猜测的数字都可能含有重复数字。
+     * @date: 2021-11-08
+     */
+    public String getHint(String secret, String guess) {
+        int bulls = 0, cows = 0;
+        Map<Character, Integer> secretMap = new HashMap<>(), guessMap = new HashMap<>();
+        for (int i = 0 ; i < secret.length() ; i++) {
+            if (secret.charAt(i) == guess.charAt(i)) {
+                bulls++;
+            }
+            secretMap.put(secret.charAt(i), secretMap.getOrDefault(secret.charAt(i), 0) + 1);
+            guessMap.put(guess.charAt(i), guessMap.getOrDefault(guess.charAt(i), 0) + 1);
+        }
+        for (Map.Entry<Character, Integer> entry : secretMap.entrySet()) {
+            cows += Math.min(entry.getValue(), guessMap.getOrDefault(entry.getKey(), 0));
+        }
+        return bulls + "A" + (cows - bulls) + "B";
+    }
+    /**
+     * @author: zangch
+     * @describe: 488. 祖玛游戏
+     * 你正在参与祖玛游戏的一个变种。
+     *
+     * 在这个祖玛游戏变体中，桌面上有 一排 彩球，每个球的颜色可能是：红色 'R'、黄色 'Y'、蓝色 'B'、绿色 'G' 或白色 'W' 。你的手中也有一些彩球。
+     *
+     * 你的目标是 清空 桌面上所有的球。每一回合：
+     *
+     * 从你手上的彩球中选出 任意一颗 ，然后将其插入桌面上那一排球中：两球之间或这一排球的任一端。
+     * 接着，如果有出现 三个或者三个以上 且 颜色相同 的球相连的话，就把它们移除掉。
+     * 如果这种移除操作同样导致出现三个或者三个以上且颜色相同的球相连，则可以继续移除这些球，直到不再满足移除条件。
+     * 如果桌面上所有球都被移除，则认为你赢得本场游戏。
+     * 重复这个过程，直到你赢了游戏或者手中没有更多的球。
+     * 给你一个字符串 board ，表示桌面上最开始的那排球。另给你一个字符串 hand ，表示手里的彩球。请你按上述操作步骤移除掉桌上所有球，计算并返回所需的 最少 球数。如果不能移除桌上所有的球，返回 -1 。
+     * @date: 2021-11-09
+     */
+    public int findMinStep(String board, String hand) {
+        if (hand.length() == 0) {
+            return -1;
+        }
+        int result = 0;
+        for (int i = 0 ; i < board.length() ; i++) {
+            if (i != 0 && board.charAt(i) == hand.charAt(0) && board.charAt(i) == board.charAt(i - 1)) {
+                String current = board.substring(0, i - 1) + board.substring(i + 1);
+                remove: while (true) {
+                    int count = 1;
+                    char c = current.charAt(0);
+                    for (int j = 1 ; j < current.length() ; j++) {
+                        if (current.charAt(j) == c) {
+                            count++;
+                            if (count == 3) {
+                                if (j != current.length() - 1 && current.charAt(j) == current.charAt(j + 1)) {
+                                    current = board.substring(0, j - 2) + board.substring(j + 2);
+                                    continue remove;
+                                }
+                                current = board.substring(0, j - 2) + board.substring(j + 1);
+                                continue remove;
+                            }
+                        } else {
+                            c = current.charAt(j);
+                            count = 1;
+                        }
+                    }
+                    break ;
+                }
+                result = findMinStep(current, hand.substring(1)) + 1;
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 1392. 最长快乐前缀
+     * 「快乐前缀」是在原字符串中既是 非空 前缀也是后缀（不包括原字符串自身）的字符串。
+     *
+     * 给你一个字符串 s，请你返回它的 最长快乐前缀。
+     *
+     * 如果不存在满足题意的前缀，则返回一个空字符串。
+     * @date: 2021-11-16
+     */
+    public String longestPrefix(String s) {
+        String result = "";
+        for (int i = 0 ; i < s.length() - 1; i++) {
+            if (s.substring(0, i + 1).equals(s.substring(s.length() - i - 1))) {
+                result = s.substring(0, i + 1);
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 318. 最大单词长度乘积
+     * 给定一个字符串数组 words，找到 length(word[i]) * length(word[j]) 的最大值，并且这两个单词不含有公共字母。你可以认为每个单词只包含小写字母。如果不存在这样的两个单词，返回 0。
+     * @date: 2021-11-17
+     */
+    public int maxProduct(String[] words) {
+        int result = 0;
+        boolean[][] letter = new boolean[words.length][26];
+        for (int i = 0 ; i < words.length ; i++) {
+            for (char c : words[i].toCharArray()) {
+                int cNum = c - 'a';
+                letter[i][cNum] = true;
+            }
+        }
+        for (int i = 0 ; i < words.length ; i++) {
+            f : for (int j = i + 1 ; j < words.length ; j++) {
+                for (int k = 0 ; k < 26 ; k++) {
+                    if (letter[i][k] & letter[j][k])
+                        continue f;
+                }
+                result = Math.max(result, words[i].length() * words[j].length());
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 794. 有效的井字游戏
+     * 给你一个字符串数组 board 表示井字游戏的棋盘。当且仅当在井字游戏过程中，棋盘有可能达到 board 所显示的状态时，才返回 true 。
+     *
+     * 井字游戏的棋盘是一个 3 x 3 数组，由字符 ' '，'X' 和 'O' 组成。字符 ' ' 代表一个空位。
+     *
+     * 以下是井字游戏的规则：
+     *
+     * 玩家轮流将字符放入空位（' '）中。
+     * 玩家 1 总是放字符 'X' ，而玩家 2 总是放字符 'O' 。
+     * 'X' 和 'O' 只允许放置在空位中，不允许对已放有字符的位置进行填充。
+     * 当有 3 个相同（且非空）的字符填充任何行、列或对角线时，游戏结束。
+     * 当所有位置非空时，也算为游戏结束。
+     * 如果游戏结束，玩家不允许再放置字符。
+     * @date: 2021-12-09
+     */
+    public boolean validTicTacToe(String[] board) {
+        return true;
+    }
+
+
 }

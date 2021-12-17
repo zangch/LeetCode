@@ -50,4 +50,20 @@ class GreedyTest {
     void findMinMoves() {
         System.out.println(greedy.findMinMoves(new int[]{44,46,11,2,12,64,40,60,92,9}));
     }
+    @Test
+    void findUnsortedSubarray() {
+        System.out.println(greedy.findUnsortedSubarray(new int[]{1,2,3,4,5,6,7}));
+    }
+    @Test
+    void canCompleteCircuit() {
+        System.out.println(greedy.canCompleteCircuit(new int[]{1,2,3,4,5}, new int[]{3,4,5,1,2}));
+    }
+    @Test
+    void removeDuplicateLetters() {
+        System.out.println(greedy.removeDuplicateLetters("zangch"));
+    }
+    @Test
+    void removeKdigits() {
+        System.out.println(greedy.removeKdigits("0567123", 4));
+    }
 }

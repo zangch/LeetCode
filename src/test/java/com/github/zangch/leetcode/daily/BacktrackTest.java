@@ -86,4 +86,8 @@ class BacktrackTest {
     void reorderedPowerOf2() {
         System.out.println(backtrack.reorderedPowerOf2(1240));
     }
+    @Test
+    void getMoneyAmount() {
+        System.out.println(backtrack.getMoneyAmount(6));
+    }
 }

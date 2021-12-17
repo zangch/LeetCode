@@ -66,4 +66,12 @@ class DynamicProgrammingTest {
     void integerBreak() {
         System.out.println(dynamicProgramming.integerBreak(13));
     }
+    @Test
+    void nthSuperUglyNumber() {
+        System.out.println(dynamicProgramming.nthSuperUglyNumber(9, new int[]{2,3,5}));
+    }
+    @Test
+    void integerReplacement() {
+        System.out.println(dynamicProgramming.integerReplacement(Integer.MAX_VALUE));
+    }
 }

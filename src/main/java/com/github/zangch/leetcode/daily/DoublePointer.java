@@ -364,17 +364,7 @@ public class DoublePointer {
         }
         return dp[n];
     }
-    /**
-     * @author: zangch
-     * @describe: 313. 超级丑数 🥦
-     * 超级丑数 是一个正整数，并满足其所有质因数都出现在质数数组 primes 中。
-     * 给你一个整数 n 和一个整数数组 primes ，返回第 n 个 超级丑数 。
-     * 题目数据保证第 n 个 超级丑数 在 32-bit 带符号整数范围内。
-     * @date: 2021-09-26
-     */
-    public int nthSuperUglyNumber(int n, int[] primes) {
-        return 0;
-    }
+
     /**
      * @author: zangch
      * @describe: 639. 解码方法 II
@@ -484,5 +474,17 @@ public class DoublePointer {
      */
     public int trapRainWater(int[][] heightMap) {
         return 0;
+    }
+    /**
+     * @author: zangch
+     * @describe: 给你一个按递增顺序排序的数组 arr 和一个整数 k 。数组 arr 由 1 和若干 素数 组成，且其中所有整数互不相同。
+     *
+     * 对于每对满足 0 < i < j < arr.length 的 i 和 j ，可以得到分数 arr[i] / arr[j] 。
+     *
+     * 那么第 k 个最小的分数是多少呢? 以长度为 2 的整数数组返回你的答案, 这里 answer[0] == arr[i] 且answer[1] == arr[j] 。
+     * @date: 2021-11-29
+     */
+    public int[] kthSmallestPrimeFraction(int[] arr, int k) {
+          return new int[2];
     }
 }

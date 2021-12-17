@@ -79,21 +79,6 @@ public class Greedy {
     }
     /**
      * @author: zangch
-     * @describe: 134. 加油站
-     * 在一条环路上有 N 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
-     * 你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
-     * 如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。
-     * 说明:
-     * 如果题目有解，该答案即为唯一答案。
-     * 输入数组均为非空数组，且长度相同。
-     * 输入数组中的元素均为非负数。
-     * @date: 2021-09-07
-     */
-    public int canCompleteCircuit(int[] gas, int[] cost) {
-        return 0;
-    }
-    /**
-     * @author: zangch
      * @describe: 135. 分发糖果
      * 老师想给孩子们分发糖果，有 N 个孩子站成了一条直线，老师会根据每个孩子的表现，预先给他们评分。
      * 你需要按照以下要求，帮助老师给这些孩子分发糖果：
@@ -213,5 +198,88 @@ public class Greedy {
             max = Math.max(max, Math.abs(move[i]));
         }
         return max;
+    }
+    /**
+     * @author: zangch
+     * @describe: 581. 最短无序连续子数组
+     * 给你一个整数数组 nums ，你需要找出一个 连续子数组 ，如果对这个子数组进行升序排序，那么整个数组都会变为升序排序。
+     *
+     * 请你找出符合题意的 最短 子数组，并输出它的长度。
+     * @date: 2021-12-17
+     */
+    public int findUnsortedSubarray(int[] nums) {
+        int[] numSort = Arrays.stream(nums).sorted().toArray();
+        int left = 0, right = nums.length - 1;
+        while (left < right && numSort[left] == nums[left]) left++;
+        while (left < right && numSort[right] == nums[right]) right--;
+        return (right == left) ?  0 : right - left + 1;
+    }
+    /**
+     * @author: zangch
+     * @describe: 134. 加油站
+     * 在一条环路上有 N 个加油站，其中第 i 个加油站有汽油 gas[i] 升。
+     *
+     * 你有一辆油箱容量无限的的汽车，从第 i 个加油站开往第 i+1 个加油站需要消耗汽油 cost[i] 升。你从其中的一个加油站出发，开始时油箱为空。
+     *
+     * 如果你可以绕环路行驶一周，则返回出发时加油站的编号，否则返回 -1。
+     *
+     * 说明:
+     *
+     * 如果题目有解，该答案即为唯一答案。
+     * 输入数组均为非空数组，且长度相同。
+     * 输入数组中的元素均为非负数。
+     * @date: 2021-12-17
+     */
+    public int canCompleteCircuit(int[] gas, int[] cost) {
+        int result = 0, rest = 0, current = 0;
+        for (int i = 0; i < gas.length; i++) {
+            result += gas[i] - cost[i];
+            rest += gas[i] - cost[i];
+            if (rest < 0) {
+                rest = 0;
+                current = i + 1;
+            }
+        }
+        return result >=0 ? current : -1;
+    }
+    /**
+     * @author: zangch
+     * @describe: 316. 去除重复字母
+     * 给你一个字符串 s ，请你去除字符串中重复的字母，使得每个字母只出现一次。需保证 返回结果的字典序最小（要求不能打乱其他字符的相对位置）。
+     * @date: 2021-12-17
+     */
+    public String removeDuplicateLetters(String s) {
+        return "";
+    }
+    /**
+     * @author: zangch
+     * @describe: 402. 移掉 K 位数字
+     * 给你一个以字符串表示的非负整数 num 和一个整数 k ，移除这个数中的 k 位数字，使得剩下的数字最小。请你以字符串形式返回这个最小的数字。
+     * @date: 2021-12-17
+     */
+    public String removeKdigits(String num, int k) {
+        StringBuilder result = new StringBuilder();
+        Stack<Character> cStack = new Stack<>();
+        for (char c : num.toCharArray()) {
+            while (k > 0 && !cStack.empty() && c < cStack.peek()) {
+                cStack.pop();
+                k--;
+            }
+            if (c != '0' || !cStack.empty()) {
+                cStack.push(c);
+            }
+        }
+        while (k > 0 && !cStack.empty()) {
+            cStack.pop();
+            k--;
+        }
+        if (cStack.empty()) {
+            return "0";
+        } else {
+            while (!cStack.empty()) {
+                result.insert(0, cStack.pop());
+            }
+        }
+        return result.toString();
     }
 }
