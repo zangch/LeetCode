@@ -282,4 +282,92 @@ public class Greedy {
         }
         return result.toString();
     }
+    /**
+     * @author: zangch
+     * @describe: 452. 用最少数量的箭引爆气球
+     * 在二维空间中有许多球形的气球。对于每个气球，提供的输入是水平方向上，气球直径的开始和结束坐标。由于它是水平的，所以纵坐标并不重要，因此只要知道开始和结束的横坐标就足够了。开始坐标总是小于结束坐标。
+     *
+     * 一支弓箭可以沿着 x 轴从不同点完全垂直地射出。在坐标 x 处射出一支箭，若有一个气球的直径的开始和结束坐标为 xstart，xend， 且满足  xstart ≤ x ≤ xend，则该气球会被引爆。可以射出的弓箭的数量没有限制。 弓箭一旦被射出之后，可以无限地前进。我们想找到使得所有气球全部被引爆，所需的弓箭的最小数量。
+     *
+     * 给你一个数组 points ，其中 points [i] = [xstart,xend] ，返回引爆所有气球所必须射出的最小弓箭数。
+     * @date: 2021-12-20
+     */
+    public int findMinArrowShots(int[][] points) {
+        points = Arrays.stream(points).sorted(Comparator.comparingInt(x -> x[0])).toArray(int[][]::new);
+        int right = points[0][1], shots = 1;
+        for (int i = 1; i < points.length; i++) {
+            if (points[i][0] > right) {
+                shots++;
+                right = points[i][1];
+            } else {
+                right = Math.min(right, points[i][1]);
+            }
+        }
+        return shots;
+    }
+    /**
+     * @author: zangch
+     * @describe: 611. 有效三角形的个数
+     * 给定一个包含非负整数的数组，你的任务是统计其中可以组成三角形三条边的三元组个数。
+     * @date: 2021-12-20
+     */
+    public int triangleNumber(int[] nums) {
+        Arrays.sort(nums);
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+
+
+
+            }
+        }
+        return 1;
+    }
+    /**
+     * @author: zangch
+     * @describe: 321. 拼接最大数
+     * 给定长度分别为 m 和 n 的两个数组，其元素由 0-9 构成，表示两个自然数各位上的数字。现在从这两个数组中选出 k (k <= m + n) 个数字拼接成一个新的数，要求从同一个数组中取出的数字保持其在原数组中的相对顺序。
+     *
+     * 求满足该条件的最大数。结果返回一个表示该最大数的长度为 k 的数组。
+     *
+     * 说明: 请尽可能地优化你算法的时间和空间复杂度。
+     * @date: 2021-12-21
+     */
+    public int[] maxNumber(int[] nums1, int[] nums2, int k) {
+        return new int[2];
+    }
+    /**
+     * @author: zangch
+     * @describe: 406. 根据身高重建队列
+     * 假设有打乱顺序的一群人站成一个队列，数组 people 表示队列中一些人的属性（不一定按顺序）。每个 people[i] = [hi, ki] 表示第 i 个人的身高为 hi ，前面 正好 有 ki 个身高大于或等于 hi 的人。
+     *
+     * 请你重新构造并返回输入数组 people 所表示的队列。返回的队列应该格式化为数组 queue ，其中 queue[j] = [hj, kj] 是队列中第 j 个人的属性（queue[0] 是排在队列前面的人）。
+     * @date: 2022-01-06
+     */
+    public int[][] reconstructQueue(int[][] people) {
+        people = Arrays.stream(people).sorted((a, b) -> (a[0] == b[0]) ? a[1] - b[1] : b[0] - a[0]).toArray(int[][]::new);
+        LinkedList<int[]> queue = new LinkedList<>();
+        for (int[] p : people) {
+            queue.add(p[1], p);
+        }
+        return queue.toArray(new int[0][]);
+    }
+    /**
+     * @author: zangch
+     * @describe: 330. 按要求补齐数组
+     * 给定一个已排序的正整数数组 nums，和一个正整数 n 。从 [1, n] 区间内选取任意个数字补充到 nums 中，使得 [1, n] 区间内的任何数字都可以用 nums 中某几个数字的和来表示。请输出满足上述要求的最少需要补充的数字个数。
+     * @date: 2022-01-07
+     */
+    public int minPatches(int[] nums, int n) {
+        int min = 0;
+        for (int i = nums.length - 1; i >= 0; i--) {
+            if (nums[i] >= (n + 1) / 2) {
+                n = nums[i];
+            } else {
+                n = (n + 1) / 2;
+                min++;
+            }
+        }
+        return min;
+    }
 }

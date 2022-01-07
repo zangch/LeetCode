@@ -66,4 +66,16 @@ class GreedyTest {
     void removeKdigits() {
         System.out.println(greedy.removeKdigits("0567123", 4));
     }
+    @Test
+    void findMinArrowShots() {
+        System.out.println(greedy.findMinArrowShots(new int[][]{{1,6},{7,12},{2,8},{10,16}}));
+    }
+    @Test
+    void reconstructQueue() {
+        System.out.println(Arrays.deepToString(greedy.reconstructQueue(new int[][]{{4,4},{6,1},{5,0},{7,0},{7,1},{5,2}})));
+    }
+    @Test
+    void minPatches() {
+        System.out.println(greedy.minPatches(new int[]{1,3}, 6));
+    }
 }

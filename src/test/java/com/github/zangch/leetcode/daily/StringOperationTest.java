@@ -33,4 +33,16 @@ class StringOperationTest {
     void maxProduct() {
         System.out.println(stringOperation.maxProduct(new String[]{"aaaa", "bb", "aab"}));
     }
+    @Test
+    void repeatedStringMatch() {
+        System.out.println(stringOperation.repeatedStringMatch("a", "aa"));
+    }
+    @Test
+    void longestDupSubstring() {
+        System.out.println(stringOperation.longestDupSubstring("banana"));
+    }
+    @Test
+    void simplifyPath() {
+        System.out.println(stringOperation.simplifyPath("//.../.a/../a/df/s/.."));
+    }
 }

@@ -55,4 +55,8 @@ class StreamOperationTest {
     void findNthDigit() {
         System.out.println(streamOperation.findNthDigit(13));
     }
+    @Test
+    void wiggleMaxLength() {
+        System.out.println(streamOperation.wiggleMaxLength(new int[]{1,1,7,4,9,2,5}));
+    }
 }

@@ -299,6 +299,168 @@ public class StringOperation {
     public boolean validTicTacToe(String[] board) {
         return true;
     }
+    /**
+     * @author: zangch
+     * @describe: 686. 重复叠加字符串匹配
+     * 给定两个字符串 a 和 b，寻找重复叠加字符串 a 的最小次数，使得字符串 b 成为叠加后的字符串 a 的子串，如果不存在则返回 -1。
+     *
+     * 注意：字符串 "abc" 重复叠加 0 次是 ""，重复叠加 1 次是 "abc"，重复叠加 2 次是 "abcabc"。
+     *
+     * @date: 2021-12-22
+     */
+    public int repeatedStringMatch(String a, String b) {
+        int current, repeated = 0;
+        StringBuilder h = new StringBuilder();
+        while (h.length() > b.length() && ++repeated > 0)
+            h.append(a);
+        current = sunday(h.toString(), b);
+//        current = h.indexOf(b);
+        return current == -1 ? current : (current + b.length() > a.length() * repeated ? repeated + 1 : repeated);
+    }
+    /**
+     * @author: zangch
+     * @describe: 字符串匹配 sunday 算法
+     * @date: 2021-12-22
+     */
+    private int sunday(String haystack, String needle ) {
+        int nl = needle.length(), hl = haystack.length(),i = 0, j = 0;
+        Map<Character, Integer> shift = new HashMap<>();
+        for (int k = 0; k < nl; k++) {
+            shift.put(needle.charAt(k), nl -k);
+        }
+        while (i <= hl - nl) {
+            while(j < nl && haystack.charAt(i + j) == needle.charAt(j))
+                j++;
+            if (j == nl) {
+                return i;
+            } else {
+                j = 0;
+            }
+            if (i < hl -nl) {
+                i += shift.getOrDefault(haystack.charAt(i + nl), nl);
+            } else {
+                break;
+            }
+        }
+        return -1;
+    }
 
+    /**
+     * Code shared by String and StringBuffer to do searches. The
+     * source is the character array being searched, and the target
+     * is the string being searched for.
+     *
+     * @param   source       the characters being searched.
+     * @param   sourceOffset offset of the source string.
+     * @param   sourceCount  count of the source string.
+     * @param   target       the characters being searched for.
+     * @param   targetOffset offset of the target string.
+     * @param   targetCount  count of the target string.
+     * @param   fromIndex    the index to begin searching from.
+     */
+    static int indexOf(char[] source, int sourceOffset, int sourceCount,
+                       char[] target, int targetOffset, int targetCount,
+                       int fromIndex) {
+        if (fromIndex >= sourceCount) {
+            return (targetCount == 0 ? sourceCount : -1);
+        }
+        if (fromIndex < 0) {
+            fromIndex = 0;
+        }
+        if (targetCount == 0) {
+            return fromIndex;
+        }
 
+        char first = target[targetOffset];
+        int max = sourceOffset + (sourceCount - targetCount);
+
+        for (int i = sourceOffset + fromIndex; i <= max; i++) {
+            /* Look for first character. */
+            if (source[i] != first) {
+                while (++i <= max && source[i] != first);
+            }
+
+            /* Found first character, now look at the rest of v2 */
+            if (i <= max) {
+                int j = i + 1;
+                int end = j + targetCount - 1;
+                for (int k = targetOffset + 1; j < end && source[j]
+                        == target[k]; j++, k++);
+
+                if (j == end) {
+                    /* Found whole string. */
+                    return i - sourceOffset;
+                }
+            }
+        }
+        return -1;
+    }
+    /**
+     * @author: zangch
+     * @describe: 1044. 最长重复子串
+     * 给你一个字符串 s ，考虑其所有 重复子串 ：即，s 的连续子串，在 s 中出现 2 次或更多次。这些出现之间可能存在重叠。
+     *
+     * 返回 任意一个 可能具有最长长度的重复子串。如果 s 不含重复子串，那么答案为 "" 。
+     * @date: 2021-12-23
+     */
+    public String longestDupSubstring(String s) {
+        String dup = "";
+        for (int i = 0; i < s.length() - 1; i++) {
+            int j = s.length();
+            while (i < --j) {
+                if (j - i <= dup.length()) {
+                    break;
+                } else if (s.indexOf(s.substring(i, j), i + 1) != -1) {
+                    dup = s.substring(i, j);
+                    break;
+                }
+            }
+        }
+        return dup;
+    }
+    /**
+     * @author: zangch
+     * @describe: 71. 简化路径
+     * 给你一个字符串 path ，表示指向某一文件或目录的 Unix 风格 绝对路径 （以 '/' 开头），请你将其转化为更加简洁的规范路径。
+     *
+     * 在 Unix 风格的文件系统中，一个点（.）表示当前目录本身；此外，两个点 （..） 表示将目录切换到上一级（指向父目录）；两者都可以是复杂相对路径的组成部分。任意多个连续的斜杠（即，'//'）都被视为单个斜杠 '/' 。 对于此问题，任何其他格式的点（例如，'...'）均被视为文件/目录名称。
+     *
+     * 请注意，返回的 规范路径 必须遵循下述格式：
+     *
+     * 始终以斜杠 '/' 开头。
+     * 两个目录名之间必须只有一个斜杠 '/' 。
+     * 最后一个目录名（如果存在）不能 以 '/' 结尾。
+     * 此外，路径仅包含从根目录到目标文件或目录的路径上的目录（即，不含 '.' 或 '..'）。
+     * 返回简化后得到的 规范路径 。
+     * @date: 2022-01-06
+     */
+    public String simplifyPath(String path) {
+        int count = 0;
+        StringBuilder simply = new StringBuilder();
+        List<String> directories = new ArrayList<>();
+        for (int i = 0; i < path.length(); i++) {
+            if (path.charAt(i) != '/' && (path.charAt(i) != '.' || (i != path.length() - 1 && path.charAt(i + 1) != '/'))) {
+                int j = i;
+                StringBuilder directory = new StringBuilder();
+                while (j < path.length()) {
+                    if (path.charAt(j) == '/') {
+                        break;
+                    }
+                    directory.append(path.charAt(j++));
+                }
+                i = j;
+                directories.add(directory.toString());
+            }
+        }
+        for (int i = directories.size() - 1; i >= 0; i--) {
+            if (directories.get(i).equals("..")) {
+                count++;
+            } else if (count != 0) {
+                count--;
+            } else {
+                simply.insert(0, "/" + directories.get(i));
+            }
+        }
+        return simply.length() == 0 ? "/" : simply.toString();
+    }
 }

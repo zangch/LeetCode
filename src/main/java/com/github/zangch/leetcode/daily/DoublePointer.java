@@ -487,4 +487,87 @@ public class DoublePointer {
     public int[] kthSmallestPrimeFraction(int[] arr, int k) {
           return new int[2];
     }
+    /**
+     * @author: zangch
+     * @describe: 475. 供暖器
+     * 冬季已经来临。 你的任务是设计一个有固定加热半径的供暖器向所有房屋供暖。
+     *
+     * 在加热器的加热半径范围内的每个房屋都可以获得供暖。
+     *
+     * 现在，给出位于一条水平线上的房屋 houses 和供暖器 heaters 的位置，请你找出并返回可以覆盖所有房屋的最小加热半径。
+     *
+     * 说明：所有供暖器都遵循你的半径标准，加热的半径也一样。
+     * @date: 2021-12-20
+     */
+    public int findRadius(int[] houses, int[] heaters) {
+        Arrays.sort(houses);
+        Arrays.sort(heaters);
+        int radius = 0, i = -1, j = 0;
+        while (++i < houses.length) {
+            while (j < heaters.length - 1 && houses[i] > heaters[j + 1]) {
+                j++;
+            }
+            if (j < heaters.length - 1) {
+                radius = Math.max(radius, Math.min(Math.abs(houses[i] - heaters[j]), Math.abs(houses[i] - heaters[j + 1])));
+            } else {
+                radius = Math.max(radius, Math.abs(houses[i] - heaters[j]));
+            }
+        }
+        return radius;
+    }
+    /**
+     * @author: zangch
+     * @describe: 825. 适龄的朋友
+     * 在社交媒体网站上有 n 个用户。给你一个整数数组 ages ，其中 ages[i] 是第 i 个用户的年龄。
+     *
+     * 如果下述任意一个条件为真，那么用户 x 将不会向用户 y（x != y）发送好友请求：
+     *
+     * age[y] <= 0.5 * age[x] + 7
+     * age[y] > age[x]
+     * age[y] > 100 && age[x] < 100
+     * 否则，x 将会向 y 发送一条好友请求。
+     *
+     * 注意，如果 x 向 y 发送一条好友请求，y 不必也向 x 发送一条好友请求。另外，用户不会向自己发送好友请求。
+     *
+     * 返回在该社交媒体网站上产生的好友请求总数。
+     * @date: 2021-12-27
+     */
+    public int numFriendRequests(int[] ages) {
+        Arrays.sort(ages);
+        int friends = 0;
+        for (int i = 0, l = 0, r = 1; i < ages.length; i++) {
+            while (l < i && !check(ages[i], ages[l])) l++;
+            if (r <= i) r = i + 1;
+            while (r < ages.length && check(ages[i], ages[r])) r++;
+            friends += r - l - 1;
+        }
+        return friends;
+    }
+    private boolean check(int x, int y) {
+        return !(y <= 0.5 * x +7 || y > x);
+    }
+    /**
+     * @author: zangch
+     * @describe: 
+     * @date: 2021-12-28
+     */
+    public List<String> findAllConcatenatedWordsInADict(String[] words) {
+        return new ArrayList<>();
+    }
+    public int countQuadruplets(int[] nums) {
+        Arrays.sort(nums);
+        int count = 0;
+        for (int i = 0; i < nums.length; i++) {
+            for (int j = i + 1; j < nums.length; j++) {
+                for (int k = j + 1; k < nums.length; k++) {
+                    for(int l = k + 1; l < nums.length; l++) {
+                        if (nums[i] + nums[j] + nums[k] == nums[l]) {
+                            count++;
+                        }
+                    }
+                }
+            }
+        }
+        return count;
+    }
 }

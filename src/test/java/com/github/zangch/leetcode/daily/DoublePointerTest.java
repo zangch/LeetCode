@@ -87,4 +87,18 @@ class DoublePointerTest {
     void trap(){
         System.out.println(doublePointer.trap(new int[]{4,2,3}));
     }
+    @Test
+    void  findRadius() {
+        System.out.println(doublePointer.findRadius(new int[]{282475249,622650073,984943658,144108930,470211272,101027544,457850878,458777923},
+                new int[]{823564440,115438165,784484492,74243042,114807987,137522503,441282327,16531729,823378840,143542612}));
+    }
+    @Test
+    void  numFriendRequests() {
+        System.out.println(doublePointer.numFriendRequests(new int[]{16,16}));
+    }
+//    [28,8,49,85,37,90,20,8]
+    @Test
+    void  t() {
+    System.out.println(doublePointer.countQuadruplets(new int[]{28,8,49,85,37,90,20,8}));
+}
 }
