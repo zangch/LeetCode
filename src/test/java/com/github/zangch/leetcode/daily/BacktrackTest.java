@@ -90,4 +90,12 @@ class BacktrackTest {
     void getMoneyAmount() {
         System.out.println(backtrack.getMoneyAmount(6));
     }
+    @Test
+    void isAdditiveNumber() {
+        System.out.println(backtrack.isAdditiveNumber("101"));
+    }
+    @Test
+    void pathSum() {
+        System.out.println(backtrack.pathSum(new TreeNode(4, new TreeNode(2, new TreeNode(1), new TreeNode(3)), new TreeNode(5)), 9));
+    }
 }

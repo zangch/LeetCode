@@ -705,4 +705,72 @@ public class Backtrack {
         }
         return f[1][n];
     }
+    /**
+     * @author: zangch
+     * @describe: 306. 累加数
+     * 累加数 是一个字符串，组成它的数字可以形成累加序列。
+     *
+     * 一个有效的 累加序列 必须 至少 包含 3 个数。除了最开始的两个数以外，字符串中的其他数都等于它之前两个数相加的和。
+     *
+     * 给你一个只包含数字 '0'-'9' 的字符串，编写一个算法来判断给定输入是否是 累加数 。如果是，返回 true ；否则，返回 false 。
+     *
+     * 说明：累加序列里的数 不会 以 0 开头，所以不会出现 1, 2, 03 或者 1, 02, 3 的情况。
+     * @date: 2022-01-10
+     */
+    public boolean isAdditiveNumber(String num) {
+        List<Long> nums = new ArrayList<>();
+        return isAdditiveNumberBacktrack(num, 0, nums);
+    }
+    private boolean isAdditiveNumberBacktrack(String num, int current, List<Long> nums) {
+        boolean result = false;
+        if (current == num.length() && nums.size() > 2) {
+            return true;
+        }
+        int l = nums.size();
+        for (int i = current; i < num.length(); i++) {
+            if ((num.charAt(current) == '0' && i > current) || i - current + 1 > (num.length() + 1) / 2 || result)
+                break;
+            long cur = Long.parseLong(num.substring(current, i + 1));
+            if (nums.size() < 2) {
+                nums.add(cur);
+                result = isAdditiveNumberBacktrack(num, i + 1, nums);
+                nums.remove(nums.size() - 1);
+            }else if (cur == nums.get(l - 1) + nums.get(l - 2)) {
+                nums.add(cur);
+                result = isAdditiveNumberBacktrack(num, i + 1, nums);
+                nums.remove(nums.size() - 1);
+            }
+        }
+        return result;
+    }
+    /**
+     * @author: zangch
+     * @describe: 113. 路径总和 II
+     * 给你二叉树的根节点 root 和一个整数目标和 targetSum ，找出所有 从根节点到叶子节点 路径总和等于给定目标和的路径。
+     *
+     * 叶子节点 是指没有子节点的节点。
+     * @date: 2022-01-10
+     */
+    public List<List<Integer>> pathSum(TreeNode root, int targetSum) {
+        List<List<Integer>> result = new ArrayList<>();
+        pathSumBacktrack(root, 0, new ArrayList<>(), result, targetSum);
+        return result;
+    }
+    private void pathSumBacktrack(TreeNode node, int current, List<Integer> path, List<List<Integer>> result, int targetSum) {
+        current += node.val;
+        path.add(node.val);
+        if (current == targetSum) {
+            result.add(new ArrayList<>(path));
+            return;
+        } else if (current > targetSum) {
+            return;
+        }
+        if (node.left != null) {
+            pathSumBacktrack(node.left, current, path, result, targetSum);
+            current -= node.val;
+        } else if (node.right != null) {
+            pathSumBacktrack(node.right, current, path, result, targetSum);
+        }
+        path.remove(path.size() - 1);
+    }
 }
