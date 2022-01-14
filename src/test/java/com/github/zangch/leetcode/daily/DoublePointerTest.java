@@ -96,9 +96,12 @@ class DoublePointerTest {
     void  numFriendRequests() {
         System.out.println(doublePointer.numFriendRequests(new int[]{16,16}));
     }
-//    [28,8,49,85,37,90,20,8]
     @Test
-    void  t() {
+    void  countQuadruplets() {
     System.out.println(doublePointer.countQuadruplets(new int[]{28,8,49,85,37,90,20,8}));
 }
+    @Test
+    void  kSmallestPairs() {
+        System.out.println(doublePointer.kSmallestPairs(new int[]{1,2,3,4,5}, new int[]{1,2,3,4,5,6}, 20));
+    }
 }

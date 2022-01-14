@@ -757,20 +757,16 @@ public class Backtrack {
         return result;
     }
     private void pathSumBacktrack(TreeNode node, int current, List<Integer> path, List<List<Integer>> result, int targetSum) {
+        if (node == null) return;
         current += node.val;
         path.add(node.val);
-        if (current == targetSum) {
+        if (current == targetSum && node.left == null && node.right == null) {
             result.add(new ArrayList<>(path));
-            return;
-        } else if (current > targetSum) {
-            return;
         }
-        if (node.left != null) {
-            pathSumBacktrack(node.left, current, path, result, targetSum);
-            current -= node.val;
-        } else if (node.right != null) {
-            pathSumBacktrack(node.right, current, path, result, targetSum);
-        }
+        pathSumBacktrack(node.left, current, path, result, targetSum);
+        pathSumBacktrack(node.right, current, path, result, targetSum);
+
         path.remove(path.size() - 1);
     }
+
 }

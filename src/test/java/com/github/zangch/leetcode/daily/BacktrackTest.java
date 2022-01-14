@@ -96,6 +96,6 @@ class BacktrackTest {
     }
     @Test
     void pathSum() {
-        System.out.println(backtrack.pathSum(new TreeNode(4, new TreeNode(2, new TreeNode(1), new TreeNode(3)), new TreeNode(5)), 9));
+        System.out.println(backtrack.pathSum(new TreeNode(-2, null, new TreeNode(-3)), -5));
     }
 }

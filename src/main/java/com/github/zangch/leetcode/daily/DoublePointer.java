@@ -1,6 +1,7 @@
 package com.github.zangch.leetcode.daily;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * @author: zangch
@@ -569,5 +570,43 @@ public class DoublePointer {
             }
         }
         return count;
+    }
+    /**
+     * @author: zangch
+     * @describe: 373. 查找和最小的K对数字
+     * 给定两个以升序排列的整数数组 nums1 和 nums2 , 以及一个整数 k 。
+     *
+     * 定义一对值 (u,v)，其中第一个元素来自 nums1，第二个元素来自 nums2 。
+     *
+     * 请找到和最小的 k 个数对 (u1,v1),  (u2,v2)  ...  (uk,vk) 。
+     * @date: 2022-01-14
+     */
+    public List<List<Integer>> kSmallestPairs(int[] nums1, int[] nums2, int k) {
+        PriorityQueue<List<Integer>> pairs = new PriorityQueue<>((a, b) -> b.get(0) + b.get(1) - a.get(0) - a.get(1));
+        for (int num1 : nums1) {
+            boolean cur = false;
+            for (int num2 : nums2) {
+                if (pairs.size() < k) {
+                    List<Integer> pair = new ArrayList<>();
+                    pair.add(num1);
+                    pair.add(num2);
+                    pairs.add(pair);
+                } else {
+                    assert pairs.peek() != null;
+                    if (num1 + num2 < pairs.peek().get(0) + pairs.peek().get(1)) {
+                        pairs.poll();
+                        List<Integer> pair = new ArrayList<>();
+                        pair.add(num1);
+                        pair.add(num2);
+                        pairs.add(pair);
+                        cur = true;
+                    }
+                }
+            }
+            if (!cur) {
+                break;
+            }
+        }
+        return new ArrayList<>(pairs);
     }
 }

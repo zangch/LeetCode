@@ -37,4 +37,8 @@ class FirstSearchTest {
     void catMouseGame() {
         System.out.println(firstSearch.catMouseGame(new int[][]{{8}}));
     }
+    @Test
+    void isEscapePossible() {
+        System.out.println(firstSearch.isEscapePossible(new int[][]{{0,1},{1,0}}, new int[]{0,0}, new int[]{1,1}));
+    }
 }
